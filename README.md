@@ -1,17 +1,19 @@
 # Java 2026 연습장
 자바를 처음 접하는 학생이 쉽게 따라 할 수 있도록 최소한의 구조만 갖춘 연습용 저장소입니다.  
 IntelliJ 프로젝트 설정(`.idea` 및 `.iml`)을 포함하고 있어 저장소를 그대로 열고 Run 버튼만 눌러 실행할 수 있습니다.  
-주차별 패키지(`week01`, `week02`, …) 아래에 강의 예제나 과제 풀이를 저장하고, 각 주차마다 `main` 역할을 하는 클래스를 두어 서로 충돌하지 않도록 구성했습니다.
+주차별 패키지(`week02`, `week03`, …) 아래에 강의 예제나 과제 풀이를 저장하고, 각 주차마다 `main` 역할을 하는 클래스를 두어 서로 충돌하지 않도록 구성했습니다.
 
 ## 디렉터리 구조
 ```
 java-2026
 ├── README.md      # 학습 가이드
 ├── src
-│   ├── week01
-│   │   └── Week01Main.java
-│   └── week02
-│       └── Week02Main.java
+│   ├── week02
+│   │   └── Week02Main.java   # 자료형과 연산자
+│   ├── week03
+│   │   └── Week03Main.java   # 제어문·제어 키워드
+│   └── week04
+│       └── Week04Main.java   # 참조 자료형
 └── docs/          # 선택: 학습 기록
 ```
 
@@ -21,25 +23,27 @@ java-2026
    - JDK가 설정되어 있지 않다면 뜨는 안내에 따라 17 버전 이상의 JDK를 선택하세요.
    - 원하는 주차의 `WeekXXMain` 파일을 열고 왼쪽 초록색 ▶ 버튼(또는 `Run 'WeekXXMain.main()'`)을 클릭하면 해당 주차 코드가 실행됩니다.
 2. 코드 수정  
-   - `src/week01`, `src/week02` 등 주차 폴더 안에 필요한 클래스를 자유롭게 추가합니다.
-   - 새 주차를 시작할 때는 `src/week03`처럼 폴더를 만들고 `package week03;`으로 선언한 `Week03Main` 클래스를 생성하세요.
+   - `src/week02`, `src/week03` 등 주차 폴더 안에 필요한 클래스를 자유롭게 추가합니다.
+   - 새 주차를 시작할 때는 `src/week05`처럼 폴더를 만들고 `package week05;`으로 선언한 `Week05Main` 클래스를 생성하세요.
 3. 새 연습 파일 추가  
    - 템플릿이 필요하다면 아래 예시를 복사해 시작합니다.
      ```java
-     package week03;
+     package week05;
 
-     public class Week03Main {
-         public static void run() {
-             // 여기에서 로직을 작성합니다.
+     public class Week05Main {
+         public static void main(String[] args) {
+             // 여기에서 실험하고 싶은 로직을 작성합니다.
          }
      }
      ```
-   - `main` 메서드 안에 테스트하고 싶은 코드를 직접 작성하거나, 별도 클래스를 만들어 호출하세요.
+   - `main` 메서드 안에서 직접 테스트하거나, 같은 패키지에 도우미 클래스를 만들어 호출하세요.
 
 ## 커밋 메세지 컨벤션
 형식은 `type: 한글/영문 메시지`를 사용합니다.
-- `feat`: 새 기능, 주차별 예제 추가, 학습용 코드 확장
-- `fix`: 버그 수정, 잘못된 예제 로직 수정
+- `feat`: 새 기능, 주차별 예제 추가, 학습용 코드 확장  
+  - 예) `feat: add week03 control keyword demos`
+- `fix`: 버그 수정, 잘못된 예제 로직 수정  
+  - 예) `fix: correct grade boundary in Week02Main`
 - `hotfix`: 급한 오류 수정(수업 직전, 배포 급한 사항 등)
 - `chore`: 설정, 빌드, 리팩터링 등 기능 변화가 없는 작업
 - `docs`: README, 학습 노트 등 문서 수정
