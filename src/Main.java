@@ -5,7 +5,7 @@ public class Main {
         int i;
         for(i = 1; i < 5; i ++){
             for (n = 1; n < 5; n ++){
-                System.out.printf("%d ",n);
+                System.out.printf("%d ", n);
             }
             System.out.println("");
         }
