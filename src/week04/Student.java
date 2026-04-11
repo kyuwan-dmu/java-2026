@@ -1,8 +1,8 @@
 package week04;
 
 public class Student {
-    private String name;
-    private int score;
+     String name;
+     int score;
 
     public String getName() {
         return name;
