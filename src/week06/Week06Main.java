@@ -2,7 +2,8 @@ package week06;
 
 import java.util.Scanner;
 import week06.student.Student;
-import week06.report.ReportService;
+import week06.components.*;
+
 
 public class Week06Main {
 
@@ -30,6 +31,25 @@ public class Week06Main {
                 case 0:
                     System.out.println("프로그램을 종료합니다.");
                     return;
+                case 1:
+                    RegistrationStudents.registStudent(sc);
+                    break;
+                case 2:
+                    System.out.println("프로그램을 종료합니다.");
+                    break;
+                case 3:
+                    System.out.println("프로그램을 종료합니다.");
+                    break;
+                case 4:
+                    System.out.println("프로그램을 종료합니다.");
+                    break;
+                case 5:
+                    System.out.println("프로그램을 종료합니다.");
+                    break;
+                case 6:
+                    System.out.println("프로그램을 종료합니다.");
+                    break;
+
                 default:
                     System.out.println("TODO: 구현하세요");
             }
