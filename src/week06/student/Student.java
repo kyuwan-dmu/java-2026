@@ -1,11 +1,85 @@
 package week06.student;
 
-public class Student {
+public final class Student {
 
-    // TODO: 필드를 선언하세요
+    private static final int MIN_SCORE = 0;
+    private static final int MAX_SCORE = 100;
+    private static final int PASSING_SCORE = 60;
 
-    // TODO: 생성자를 만드세요
+    private String name;
+    private int score;
+    private static int totalCreated = 0;
 
-    // TODO: 메서드를 만드세요
+    public Student() {
+        this("이름없음", 0);
+    }
 
+    public Student(String name) {
+        this(name, 0);
+    }
+
+    public Student(String name, int score) {
+        if (!isValidScore(score)) {
+            throw new IllegalArgumentException("유효하지 않은 점수입니다");
+        }
+        this.name = name;
+        this.score = score;
+        totalCreated++;
+    }
+
+    private static boolean isValidScore(int value) {
+        return value >= MIN_SCORE && value <= MAX_SCORE;
+    }
+
+    @SuppressWarnings("unused")
+    static boolean isPassing(int score) {
+        return score >= PASSING_SCORE;
+    }
+
+    public static int getTotalCreated() {
+        return totalCreated;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public String getGrade() {
+        if (score >= 90) {
+            return "A";
+        }
+        if (score >= 80) {
+            return "B";
+        }
+        if (score >= 70) {
+            return "C";
+        }
+        return "F";
+    }
+
+    public boolean setScore(int newScore) {
+        if (!isValidScore(newScore)) {
+            return false;
+        }
+        this.score = newScore;
+        return true;
+    }
+
+    public void addBonus(int bonus) {
+        this.score = clampScore(this.score + bonus);
+    }
+
+    private static int clampScore(int value) {
+        if (value > MAX_SCORE) {
+            return MAX_SCORE;
+        }
+        if (value < MIN_SCORE) {
+            return MIN_SCORE;
+        }
+        return value;
+    }
 }
