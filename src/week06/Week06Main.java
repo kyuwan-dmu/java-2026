@@ -30,6 +30,20 @@ public class Week06Main {
                 case 0:
                     System.out.println("프로그램을 종료합니다.");
                     return;
+                case 1:
+                    System.out.print("이름 입력 (없으면 enter): ");
+                    String name = sc.nextLine();
+                    System.out.print("점수 입력 (없으면 enter): ");
+                    int score = sc.nextInt();
+                    sc.nextLine();
+
+                    Student student = new Student(name, score);
+                    students[count] = student;
+                    count ++;
+                    System.out.println("등록완료:"+" "+ student.getName()+" "+ "("+ student.getScore()+ ")");
+                    break;
+                case 2:
+                    System.out.println("이름 입력"+ " " + student.getName() + ", " + "점수: " + student.getScore());
                 default:
                     System.out.println("TODO: 구현하세요");
             }
