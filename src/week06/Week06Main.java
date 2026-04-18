@@ -89,7 +89,7 @@ public class Week06Main {
         if (nameEmpty && scoreEmpty) {
             return new Student();
         }
-        if (!nameEmpty && scoreEmpty) {
+        if (nameEmpty == false && scoreEmpty) {
             return new Student(nameTrim);
         }
 
@@ -126,41 +126,39 @@ public class Week06Main {
     }
 
     private static void updateScore(Scanner sc, Student[] students, int count) {
-        if (!hasStudents(count)) {
-            return;
-        }
+        if (hasStudents(count)) {
+            System.out.print("이름 입력: ");
+            String name = sc.nextLine().trim();
+            System.out.print("새 점수 입력: ");
+            String line = sc.nextLine().trim();
 
-        System.out.print("이름 입력: ");
-        String name = sc.nextLine().trim();
-        System.out.print("새 점수 입력: ");
-        String line = sc.nextLine().trim();
-
-        Student found = findStudentByName(students, count, name);
-        if (found == null) {
-            System.out.println(MSG_STUDENT_NOT_FOUND);
-            return;
-        }
-
-        try {
-            int newScore = Integer.parseInt(line);
-            if (!found.setScore(newScore)) {
-                System.out.println(MSG_INVALID_SCORE);
+            Student found = findStudentByName(students, count, name);
+            if (found == null) {
+                System.out.println(MSG_STUDENT_NOT_FOUND);
                 return;
             }
-            System.out.println("점수 수정 완료: " + found.getName() + " (" + found.getScore() + "점)");
-        } catch (NumberFormatException e) {
-            System.out.println(MSG_SCORE_NOT_INT);
+
+            try {
+                int newScore = Integer.parseInt(line);
+                boolean updated = found.setScore(newScore);
+                if (updated) {
+                    System.out.println("점수 수정 완료: " + found.getName() + " (" + found.getScore() + "점)");
+                } else {
+                    System.out.println(MSG_INVALID_SCORE);
+                }
+            } catch (NumberFormatException e) {
+                System.out.println(MSG_SCORE_NOT_INT);
+            }
         }
     }
 
     private static void applyBonusMenu(Scanner sc, Student[] students, int count) {
-        if (!hasStudents(count)) {
-            return;
+        if (hasStudents(count)) {
+            System.out.print("보너스 점수 입력: ");
+            int bonus = sc.nextInt();
+            sc.nextLine();
+            ReportService.applyBonus(students, count, bonus);
+            System.out.println("보너스 부여 완료.");
         }
-        System.out.print("보너스 점수 입력: ");
-        int bonus = sc.nextInt();
-        sc.nextLine();
-        ReportService.applyBonus(students, count, bonus);
-        System.out.println("보너스 부여 완료!");
     }
 }

@@ -19,12 +19,13 @@ public final class Student {
     }
 
     public Student(String name, int score) {
-        if (!isValidScore(score)) {
+        if (isValidScore(score)) {
+            this.name = name;
+            this.score = score;
+            totalCreated++;
+        } else {
             throw new IllegalArgumentException("유효하지 않은 점수입니다");
         }
-        this.name = name;
-        this.score = score;
-        totalCreated++;
     }
 
     private static boolean isValidScore(int value) {
@@ -62,11 +63,11 @@ public final class Student {
     }
 
     public boolean setScore(int newScore) {
-        if (!isValidScore(newScore)) {
-            return false;
+        if (isValidScore(newScore)) {
+            this.score = newScore;
+            return true;
         }
-        this.score = newScore;
-        return true;
+        return false;
     }
 
     public void addBonus(int bonus) {
