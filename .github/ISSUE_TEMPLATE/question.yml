@@ -1,18 +1,32 @@
-name: "❓ 질문"
-description: "수업 내용이나 과제에 대한 질문"
+name: "Question"
+description: "기술적인 질문이나 구현 관련 문의"
 labels: ["question"]
 body:
   - type: input
-    id: student-info
+    id: reporter
     attributes:
-      label: 학번 / 이름
+      label: Reporter
       placeholder: "20261234 홍길동"
     validations:
       required: true
   - type: dropdown
-    id: week
+    id: category
     attributes:
-      label: 관련 주차
+      label: Category
+      description: "질문 유형을 선택해주세요."
+      options:
+        - "구현 방법 문의"
+        - "에러 해결 문의"
+        - "개념 이해 질문"
+        - "코드 리뷰 요청"
+        - "기타"
+    validations:
+      required: true
+  - type: dropdown
+    id: module
+    attributes:
+      label: Related Module
+      description: "관련 모듈(주차)을 선택해주세요."
       options:
         - week01
         - week02
@@ -35,16 +49,26 @@ body:
   - type: textarea
     id: question
     attributes:
-      label: 질문 내용
-      description: "궁금한 점을 구체적으로 적어주세요."
-      placeholder: "어떤 부분에서 어떤 에러가 발생하는지, 어떤 개념이 이해가 안 되는지 등"
+      label: Description
+      description: "질문 내용을 구체적으로 적어주세요."
     validations:
       required: true
   - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: "관련 코드나 참고 자료가 있다면 적어주세요."
+      render: java
+    validations:
+      required: false
+  - type: textarea
     id: tried
     attributes:
-      label: 시도해본 것
+      label: What I've Tried
       description: "문제 해결을 위해 시도해본 것이 있다면 적어주세요."
-      placeholder: "검색해본 키워드, 시도한 코드 등"
+      placeholder: |
+        - 공식 문서 확인:
+        - 검색 키워드:
+        - 시도한 코드:
     validations:
       required: false
