@@ -1,0 +1,60 @@
+name: Auto Labeler
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  label:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Get changed files
+        id: changed
+        uses: tj-actions/changed-files@v44
+
+      - name: Add week labels
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const changedFiles = '${{ steps.changed.outputs.all_changed_files }}'.split(' ');
+            const weeks = new Set();
+
+            for (const file of changedFiles) {
+              const match = file.match(/(?:src|build)\/(week\d{2})/);
+              if (match) {
+                weeks.add(match[1]);
+              }
+            }
+
+            if (weeks.size === 0) return;
+
+            const labels = [...weeks];
+            console.log(`Adding labels: ${labels.join(', ')}`);
+
+            // 존재하지 않는 라벨은 자동 생성
+            for (const label of labels) {
+              try {
+                await github.rest.issues.getLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  name: label
+                });
+              } catch {
+                await github.rest.issues.createLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  name: label,
+                  color: '0075ca'
+                });
+              }
+            }
+
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              labels: labels
+            });

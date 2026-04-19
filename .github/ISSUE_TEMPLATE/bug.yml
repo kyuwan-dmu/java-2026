@@ -1,0 +1,48 @@
+name: "🐛 버그 / 오류 제보"
+description: "코드 실행 중 발생하는 오류를 제보해주세요"
+labels: ["bug"]
+body:
+  - type: input
+    id: student-info
+    attributes:
+      label: 학번 / 이름
+      placeholder: "20261234 홍길동"
+    validations:
+      required: true
+  - type: dropdown
+    id: week
+    attributes:
+      label: 관련 주차
+      options:
+        - week01
+        - week02
+        - week03
+        - week04
+        - week05
+        - week06
+        - week07
+        - week08
+        - week09
+        - week10
+        - week11
+        - week12
+        - week13
+        - week14
+        - week15
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: 오류 설명
+      description: "어떤 오류가 발생하나요?"
+    validations:
+      required: true
+  - type: textarea
+    id: error-message
+    attributes:
+      label: 에러 메시지
+      description: "에러 메시지가 있다면 전체를 복사해서 붙여넣어주세요."
+      render: shell
+    validations:
+      required: false
