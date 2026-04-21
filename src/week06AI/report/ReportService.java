@@ -1,6 +1,6 @@
-package week06.report;
+package week06AI.report;
 
-import week06.student.Student;
+import week06AI.student.Student;
 
 public final class ReportService {
 

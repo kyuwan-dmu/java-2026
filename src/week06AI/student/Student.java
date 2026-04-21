@@ -1,4 +1,4 @@
-package week06.student;
+package week06AI.student;
 
 public final class Student {
 

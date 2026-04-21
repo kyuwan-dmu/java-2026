@@ -50,7 +50,7 @@
 ## 패키지 구조
 
 ```
-src/week06/
+src/week06AI/
 ├── student/
 │    └── Student.java
 ├── report/

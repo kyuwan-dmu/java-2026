@@ -1,9 +1,9 @@
-package week06;
+package week06AI;
 
 import java.util.Locale;
 import java.util.Scanner;
-import week06.report.ReportService;
-import week06.student.Student;
+import week06AI.report.ReportService;
+import week06AI.student.Student;
 
 public class Week06Main {
 
