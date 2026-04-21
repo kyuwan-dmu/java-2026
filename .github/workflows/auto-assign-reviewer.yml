@@ -1,0 +1,30 @@
+name: Auto Assign Reviewer
+
+on:
+  pull_request:
+    types: [opened]
+
+jobs:
+  assign-reviewer:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Add reviewer
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const owner = 'kyuwan-dmu';
+
+            // PR 작성자가 본인이면 리뷰어 추가 스킵
+            if (context.payload.pull_request.user.login === owner) {
+              console.log('PR author is the owner, skipping reviewer assignment');
+              return;
+            }
+
+            await github.rest.pulls.requestReviewers({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number,
+              reviewers: [owner]
+            });
+            console.log(`Reviewer ${owner} assigned`);
