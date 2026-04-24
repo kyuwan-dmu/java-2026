@@ -1,65 +1,93 @@
 package week06.student;
 
 public class Student {
-    // 1. 필드 (변수들)
+    // 외부에서 직접 접근하지 못하도록 private으로 숨긴다.
     private String name;
     private int score;
     private String grade;
-    private static int count = 0; // 전체 학생 수 카운트
 
-    // 2. 생성자 (여기서부터는 클래스 안으로 쏙 들어와야 합니다!)
+    // "생성된" 학생 수를 추적하는 정적 변수
+    // 과제 요구사항이 등록 수가 아니라 생성 수 추적이므로 static 필드로 관리한다.
+    private static int count = 0;
 
-    // [방식 1] 이름과 점수를 모두 지정할 때
-    public Student(String name, int score) {
-        this.name = name;
-        setScore(score); // 점수 검증 로직 호출
-        count++;         // 학생 생성 시 카운트 증가
-    }
-
-    // [방식 2] 이름만 지정할 때
-    public Student(String name) {
-        this(name, 0);   // [방식 1] 생성자를 호출
-    }
-
-    // [방식 3] 아무것도 지정하지 않을 때
+    // 아무것도 주지 않으면 이름없음, 0점으로 생성
     public Student() {
-        this("이름없음", 0); // [방식 1] 생성자를 호출
+        this("이름없음", 0);
     }
 
-    // 3. 메서드 (기능들)
+    // 이름만 주면 점수는 0점으로 생성
+    public Student(String name) {
+        this(name, 0);
+    }
 
-    // 점수를 세팅하고 등급을 계산하는 메서드
-    public void setScore(int score) {
-        if (score >= 0 && score <= 100) {
-            this.score = score;
-            calculateGrade(); // 점수가 정상일 때만 등급 계산
+    // 이름과 점수를 모두 받는 생성자
+    public Student(String name, int score) {
+        // 이름이 null이거나 공백이면 기본 이름으로 처리
+        this.name = isBlank(name) ? "이름없음" : name;
+
+        // 점수 검증은 setScore에 맡겨 중복 코드를 줄인다.
+        // 요구사항상 범위를 벗어나면 거부해야 하므로 예외를 발생시킨다.
+        if (!setScore(score)) {
+            throw new IllegalArgumentException("유효하지 않은 점수입니다");
+        }
+
+        // 정상적으로 학생 객체가 생성된 경우에만 count 증가
+        count++;
+    }
+
+    // 이름 조회
+    public String getName() {
+        return name;
+    }
+
+    // 점수 조회
+    public int getScore() {
+        return score;
+    }
+
+    // 등급 조회
+    public String getGrade() {
+        return grade;
+    }
+
+    // 점수를 수정하는 메서드
+    // 0~100 범위가 아니면 수정하지 않고 false를 반환한다.
+    public boolean setScore(int score) {
+        if (score < 0 || score > 100) {
+            return false;
+        }
+
+        this.score = score;
+        this.grade = calculateGrade(score);
+        return true;
+    }
+
+    // 점수에 따라 등급을 계산하는 내부 전용 메서드
+    private String calculateGrade(int score) {
+        if (score >= 90) {
+            return "A";
+        } else if (score >= 80) {
+            return "B";
+        } else if (score >= 70) {
+            return "C";
         } else {
-            // 메인에서 "유효하지 않은 점수입니다"를 출력하겠지만,
-            // 안전을 위해 여기서도 체크할 수 있습니다.
-            System.out.println("유효하지 않은 점수입니다");
+            return "F";
         }
     }
 
-    // 등급 계산 로직 (내부에서만 사용하므로 private)
-    private void calculateGrade() {
-        if (score >= 90) grade = "A";
-        else if (score >= 80) grade = "B";
-        else if (score >= 70) grade = "C";
-        else grade = "F";
-    }
-
-    // 외부에서 값을 읽어가기 위한 Getter들
-    public String getName() { return name; }
-    public int getScore() { return score; }
-    public String getGrade() { return grade; }
-
-    // 총 학생 수를 반환하는 static 메서드
+    // 지금까지 생성된 총 학생 수 반환
     public static int getCount() {
         return count;
     }
 
-    // [중요 요구사항] 같은 패키지 내에서만 접근 가능한 합격 판별
+    // 합격 여부 판단 메서드
+    // 접근제어자를 쓰지 않아 같은 패키지 내부에서만 사용 가능하다.
     boolean isPassed() {
         return score >= 60;
     }
-} // <--- 클래스가 여기서 닫혀야 합니다!
+
+    // 문자열이 비어 있는지 확인하는 보조 메서드
+    private boolean isBlank(String text) {
+        return text == null || text.trim().isEmpty();
+    }
+}
