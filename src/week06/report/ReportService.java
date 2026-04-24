@@ -16,7 +16,22 @@ public class ReportService {
 
     /// 여러 학생(Student) 데이터를 파라미터로 전체 학생의 점수의 평균을 계산합니다.
     static public double allStudentAvg(Student[] students) {
-        // 평균 로직에서 배열 null 넘겨서 처리해야함
+        int cnt = 0;
+        int total = 0;
+
+        for (int i=0; i< students.length; i++) {
+            if (Objects.isNull(students[i])) {
+                break;
+            }
+
+            Student student = students[i];
+            int score = student.getScore();
+
+            total += score;
+            cnt++;
+        }
+        double avg = Math.round((double) total / cnt);
+        return avg;
     }
 
     /// 학생 배열 전체에 보너스 점수 일괄 부여

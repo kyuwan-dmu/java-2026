@@ -94,12 +94,16 @@ public class Week06Main {
     }
 
     static private void updateScore(String name, int score) {
-        int idx = idxMap.get(name);
-        students[idx].setScore(score);
+        try {
+            int idx = idxMap.get(name);
+            students[idx].setScore(score);
 
-        System.out.printf("""
-        점수 수정 완료: %s (%d점) \n
-        """, name, score);
+            System.out.printf("""
+                점수 수정 완료: %s (%d점) \n
+            """, name, score);
+        } catch (NullPointerException e) {
+            System.out.println("정확한 학생의 이름을 적어주세요.");
+        }
     }
 
     static private void updateAllStudentBonusScore(int bonusScore) {
@@ -113,7 +117,7 @@ public class Week06Main {
     static private void getAllStudentAvg() {
         double allStudentAvgScore = ReportService.allStudentAvg(students);
 
-        System.out.printf("전체 평균: %0.1f \n", allStudentAvgScore);
+        System.out.printf("전체 평균: %f \n", allStudentAvgScore);
     }
 
     static private void getAllStudentCnt() {

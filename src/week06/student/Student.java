@@ -42,8 +42,17 @@ public class Student {
 
     /// 학생의 점수(score)를 수정합니다.
     public void setScore(int score) {
-        if (score < 0 || score > 100) {
+        if (score < 0) {
             System.out.println("유효하지 않은 점수입니다");
+            this.score = 0;
+
+            return;
+        }
+        if (score > 100) {
+            System.out.println("유효하지 않은 점수입니다");
+            this.score = 100;
+
+            return;
         }
         this.score = score;
     }
