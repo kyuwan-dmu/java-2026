@@ -2,7 +2,6 @@ package week06;
 
 import java.util.Scanner;
 import week06.student.Student;
-import week06.report.ReportService;
 
 public class Week06Main{
 
