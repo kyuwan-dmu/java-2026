@@ -142,4 +142,8 @@ public class Week06Main {
         return null;
     }
 
+    // 문자열이 비어 있는지 검사하는 메서드
+    private static boolean isBlank(String text) {
+        return text == null || text.trim().isEmpty();
+    }
 }

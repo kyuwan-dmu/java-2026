@@ -1,30 +1,45 @@
-name: Auto Assign Reviewer
+name: Auto Assign
 
 on:
-  pull_request:
+  pull_request_target:
     types: [opened]
 
+permissions:
+  pull-requests: write
+  issues: write
+
 jobs:
-  assign-reviewer:
+  assign:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Add reviewer
+      - name: Assign reviewer and assignee
         uses: actions/github-script@v7
         with:
           script: |
             const owner = 'kyuwan-dmu';
+            const prAuthor = context.payload.pull_request.user.login;
 
-            // PR 작성자가 본인이면 리뷰어 추가 스킵
-            if (context.payload.pull_request.user.login === owner) {
-              console.log('PR author is the owner, skipping reviewer assignment');
-              return;
+            // Assignee로 PR 작성자 지정
+            try {
+              await github.rest.issues.addAssignees({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                assignees: [prAuthor]
+              });
+              console.log(`Assignee assigned: ${prAuthor}`);
+            } catch (e) {
+              console.log(`Assignee 지정 실패 (collaborator가 아닐 수 있음): ${e.message}`);
             }
 
-            await github.rest.pulls.requestReviewers({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: context.issue.number,
-              reviewers: [owner]
-            });
-            console.log(`Reviewer ${owner} assigned`);
+            // 본인 PR이 아니면 리뷰어 추가
+            if (prAuthor !== owner) {
+              await github.rest.pulls.requestReviewers({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: context.issue.number,
+                reviewers: [owner]
+              });
+              console.log(`Reviewer assigned: ${owner}`);
+            }
