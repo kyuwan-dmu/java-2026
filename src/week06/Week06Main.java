@@ -1,3 +1,5 @@
+// 저는 AI 안쓰고 만들었어요 헤헤
+
 package week06;
 
 import java.util.Scanner;
@@ -28,6 +30,35 @@ public class Week06Main {
 
             switch (menu) {
                 case 0:
+                    System.out.println("프로그램을 종료합니다.");
+                    return;
+                case 1:
+                    System.out.println("학생을 등록합니다. 이름과 점수를 입력받습니다.");
+                    System.out.print("이름 입력 (없으면 Enter): ");
+                    Scanner inputName = new Scanner(System.in);
+                    students[count] = new Student(inputName.nextLine());
+                    System.out.print("점수 입력 (없으면 Enter): ");
+                    int inputScore = sc.nextInt();
+                    students[count] = new Student(students[count].getName(), inputScore);
+                    System.out.println("등록 완료: " + (students[count].name.equals("") ? "이름없음" : students[count].name) + " ( " + students[count].score + " )");
+                    count++;
+                    continue;
+                case 2:
+                    System.out.println("전체 학생 목록을 조회합니다.");
+                    for(int i = 0; i < count; i++) {
+                        System.out.println(students[i].name + " " + students[i].score);
+                    }
+                    return;
+                case 3:
+                    System.out.println("프로그램을 종료합니다.");
+                    return;
+                case 4:
+                    System.out.println("프로그램을 종료합니다.");
+                    return;
+                case 5:
+                    System.out.println("프로그램을 종료합니다.");
+                    return;
+                case 6:
                     System.out.println("프로그램을 종료합니다.");
                     return;
                 default:
