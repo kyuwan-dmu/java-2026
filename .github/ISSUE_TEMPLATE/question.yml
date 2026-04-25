@@ -1,0 +1,74 @@
+name: "Question"
+description: "기술적인 질문이나 구현 관련 문의"
+labels: ["question"]
+body:
+  - type: input
+    id: reporter
+    attributes:
+      label: Reporter
+      placeholder: "20261234 홍길동"
+    validations:
+      required: true
+  - type: dropdown
+    id: category
+    attributes:
+      label: Category
+      description: "질문 유형을 선택해주세요."
+      options:
+        - "구현 방법 문의"
+        - "에러 해결 문의"
+        - "개념 이해 질문"
+        - "코드 리뷰 요청"
+        - "기타"
+    validations:
+      required: true
+  - type: dropdown
+    id: module
+    attributes:
+      label: Related Module
+      description: "관련 모듈(주차)을 선택해주세요."
+      options:
+        - week01
+        - week02
+        - week03
+        - week04
+        - week05
+        - week06
+        - week07
+        - week08
+        - week09
+        - week10
+        - week11
+        - week12
+        - week13
+        - week14
+        - week15
+        - 기타
+    validations:
+      required: true
+  - type: textarea
+    id: question
+    attributes:
+      label: Description
+      description: "질문 내용을 구체적으로 적어주세요."
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: "관련 코드나 참고 자료가 있다면 적어주세요."
+      render: java
+    validations:
+      required: false
+  - type: textarea
+    id: tried
+    attributes:
+      label: What I've Tried
+      description: "문제 해결을 위해 시도해본 것이 있다면 적어주세요."
+      placeholder: |
+        - 공식 문서 확인:
+        - 검색 키워드:
+        - 시도한 코드:
+    validations:
+      required: false
