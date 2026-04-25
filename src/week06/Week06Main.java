@@ -33,6 +33,9 @@ public class Week06Main {
                 case 1:
                     System.out.print("이름 입력 (없으면 enter): ");
                     String name = sc.nextLine();
+                    if(name.isEmpty()){
+                        name = "이름없음";
+                    }
                     System.out.print("점수 입력 (없으면 enter): ");
                     int score = sc.nextInt();
                     sc.nextLine();
@@ -43,7 +46,19 @@ public class Week06Main {
                     System.out.println("등록완료:"+" "+ student.getName()+" "+ "("+ student.getScore()+ ")");
                     break;
                 case 2:
-                    System.out.println("이름 입력"+ " " + student.getName() + ", " + "점수: " + student.getScore());
+                    for(int i = 0; i < count; i ++){
+                        System.out.println(i + 1 +" 이름: "+students[i].getName()+", 점수: "+ students[i].getScore() +", "+ students[i].getGrade());
+                    }
+                case 3:
+                case 5:
+                    int sum = 0;
+                    float avg = 0;
+                    int j;
+                    for(j = 1; j < count; j ++){
+                        sum = students[j].getScore() + sum;
+                    }
+                    avg = sum / j;
+                    System.out.printf("전체 평균: %.1f\n", avg);
                 default:
                     System.out.println("TODO: 구현하세요");
             }
