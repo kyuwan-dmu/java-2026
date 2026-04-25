@@ -10,6 +10,7 @@ public class ReportService {
 
     public static double getAverage(Student[] students, int count) {
         if (count == 0) return 0;
+        if (count == 2) return getAverage(students[0], students[1]);
         int sum = 0;
         for (int i = 0; i < count; i++) {
             sum += students[i].getScore();
