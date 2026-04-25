@@ -29,25 +29,25 @@ public class Week06Main {
 
             switch (menu) {
                 case 0:
-                    System.out.println("프로그램을 종료합니다.");
+                    System.out.println("다음에 봐ㅏ");
                     return;
                 case 1:
                     RegistrationStudents.registStudent(sc);
                     break;
                 case 2:
-                    System.out.println("프로그램을 종료합니다.");
+                    FindStudents.printAllStudents();
                     break;
                 case 3:
-                    System.out.println("프로그램을 종료합니다.");
+                    System.out.println("아직 구현이 되지 않은 기능이야아아아아.");
                     break;
                 case 4:
-                    System.out.println("프로그램을 종료합니다.");
+                    System.out.println("아직 구현이 되지 않은 기능이야아아아아.");
                     break;
                 case 5:
-                    System.out.println("프로그램을 종료합니다.");
+                    System.out.println("아직 구현이 되지 않은 기능이야아아아아.");
                     break;
                 case 6:
-                    System.out.println("프로그램을 종료합니다.");
+                    System.out.println("아직 구현이 되지 않은 기능이야아아아아.");
                     break;
 
                 default:

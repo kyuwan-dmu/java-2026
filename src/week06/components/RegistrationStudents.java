@@ -30,7 +30,7 @@ public class RegistrationStudents {
         list.add(new Student(name, score));
         // 만든 리스트에 받은 정보 넣기
 
-        System.out.print("등록 완료" + name + "("+ score +" 점)");
+        System.out.print("등록 완료 " + name + " ("+ score +" 점)");
 
     }
 }
