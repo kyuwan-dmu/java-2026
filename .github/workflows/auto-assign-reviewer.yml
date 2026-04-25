@@ -1,0 +1,45 @@
+name: Auto Assign
+
+on:
+  pull_request_target:
+    types: [opened]
+
+permissions:
+  pull-requests: write
+  issues: write
+
+jobs:
+  assign:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Assign reviewer and assignee
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const owner = 'kyuwan-dmu';
+            const prAuthor = context.payload.pull_request.user.login;
+
+            // Assignee로 PR 작성자 지정
+            try {
+              await github.rest.issues.addAssignees({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                assignees: [prAuthor]
+              });
+              console.log(`Assignee assigned: ${prAuthor}`);
+            } catch (e) {
+              console.log(`Assignee 지정 실패 (collaborator가 아닐 수 있음): ${e.message}`);
+            }
+
+            // 본인 PR이 아니면 리뷰어 추가
+            if (prAuthor !== owner) {
+              await github.rest.pulls.requestReviewers({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: context.issue.number,
+                reviewers: [owner]
+              });
+              console.log(`Reviewer assigned: ${owner}`);
+            }
