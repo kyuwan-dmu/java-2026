@@ -40,14 +40,11 @@ public class Student {
         if (score >= 90) return 'A';
         if (score >= 80) return 'B';
         if (score >= 70) return 'C';
+        if (score >= 60) return 'T';
         return 'F';
     }
 
     public static int getTotalStudentCount() {
         return totalStudentCount;
-    }
-
-    boolean isPassed() {
-        return score >= 60;
     }
 }
