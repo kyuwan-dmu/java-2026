@@ -30,10 +30,10 @@ public class Main {
         String orderDate = sdf.format(new Date());
 
         Order newOrder1 = new Order(
-                newOrderId1, "테스트1", "", 1, "머지", 15000,
+                newOrderId1, "테스트 상품", "", 1, "머지", 15000,
                 orderDate, "301 배송 준비 중", "서울 강남구");
         Order newOrder2 = new Order(
-                newOrderId2, "테스트2", "", 1, "머지", 15000,
+                newOrderId2, "테스트 상품", "", 1, "머지", 15000,
                 orderDate, "301 배송 준비 중", "서울 강남구");
         orders.add(newOrder1);
         orders.add(newOrder2);
@@ -50,6 +50,6 @@ public class Main {
         for (Order order : orders) {
             System.out.println(order);
         }
-        System.out.println("=====================");
+        System.out.println("====================");
     }
 }
