@@ -10,10 +10,13 @@ public class Main {
         Order[] orders = OrderDataProvider.getOrdersAsArray();
 
         // TODO 1: 기본 for문으로 전체 주문을 번호와 함께 출력하시오
-
         // TODO 2: 향상된 for문(for-each)으로 전체 주문을 출력하시오
-
+        System.out.println("===== 전체 주문 목록 =====");
+        for (Order order : orders) {
+            System.out.println(order.toString());
+        }
+        System.out.println("========================");
         // TODO 3: 전체 주문 건수를 출력하시오
-
+        System.out.println("총 " + orders.length + "건");
     }
 }
