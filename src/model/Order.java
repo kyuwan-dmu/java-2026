@@ -16,7 +16,6 @@ public class Order {
                  String brand, int price, String orderDate, String status, String region) {
         this.orderId = orderId;
         this.productName = productName;
-        this.option = option.isEmpty() ? "(없음)" : option;
         this.quantity = quantity;
         this.brand = brand;
         this.price = price;

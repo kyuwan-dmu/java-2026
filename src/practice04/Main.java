@@ -53,8 +53,5 @@ public class Main {
 
 
         // TODO 4: 전체 주문 리스트 출력
-        System.out.println("===== 전체 주문 =====");
-        for (Order order : orders) { order.printOrderInfo(); }
-        System.out.println("====================");
     }
 }
