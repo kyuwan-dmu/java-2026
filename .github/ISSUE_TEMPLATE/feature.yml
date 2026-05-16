@@ -1,0 +1,32 @@
+name: "Feature Request"
+description: "새로운 기능이나 개선 사항을 제안합니다"
+labels: ["enhancement"]
+body:
+  - type: input
+    id: reporter
+    attributes:
+      label: Reporter
+      placeholder: "20261234 홍길동"
+    validations:
+      required: true
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: "제안하는 기능을 한 줄로 요약해주세요."
+    validations:
+      required: true
+  - type: textarea
+    id: motivation
+    attributes:
+      label: Motivation
+      description: "이 기능이 왜 필요한가요? 어떤 문제를 해결하나요?"
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed Solution
+      description: "어떻게 구현하면 좋을지 아이디어가 있다면 적어주세요."
+    validations:
+      required: false
