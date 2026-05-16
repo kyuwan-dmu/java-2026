@@ -11,7 +11,7 @@ public class Main {
         // 데이터 불러오기
         Order[] orders = OrderDataProvider.getOrdersAsArray();
 
-        // TODO: 첫 번째 주문을 변수에 담고, 모든 정보를 출력하시오 
+        // TODO: 첫 번째 주문을 변수에 담고, 모든 정보를 출력하시오
 
     for(Order order : orders) {
         System.out.println("\n===== 주문 상세 =====");
