@@ -15,10 +15,10 @@ public class Main {
         System.out.println("===== 주문 상세 =====");
         System.out.println("주문번호: "+orders[0].getOrderId());
         System.out.println("상품명: "+orders[0].getProductName());
-        System.out.println("브랜드: "+orders[0].getOption());
-        System.out.println("옵션: "+orders[0].getQuantity());
-        System.out.println("수량: "+orders[0].getBrand());
-        System.out.println("금액: "+orders[0].getPrice());
+        System.out.println("브랜드: "+orders[0].getBrand());
+        System.out.println("옵션: "+orders[0].getOption());
+        System.out.println("수량: "+orders[0].getQuantity());
+        System.out.println("금액: "+String.format("%,d",orders[0].getPrice()));
         System.out.println("주문일: "+orders[0].getOrderDate());
         System.out.println("상태: "+orders[0].getStatus());
         System.out.println("상태: "+orders[0].getRegion());
