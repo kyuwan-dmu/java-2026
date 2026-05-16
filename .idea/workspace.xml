@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="4b87f0e9-cba0-43e3-a27b-1c163ddfce4a" name="변경" comment="feat: 05 Main">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/java-2026/week03/Week03Main.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/java-2026/week05/A.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/java-2026/week05/B.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/practice05/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/practice05/Main.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {}
+}</component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/kyuwan-dmu/java-2026.git",
+    "accountId": "eed5413b-d9d1-4c5b-860a-c51dc1e645de"
+  }
+}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 3
+}</component>
+  <component name="ProjectId" id="3Bi6t6lkHJvFYYOUBfVNXBArZpI" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Main.executor": "Run",
+    "Application.Week06Main.executor": "Run",
+    "Application.practice01.Main.executor": "Run",
+    "Application.practice02.Main.executor": "Run",
+    "Application.practice03.Main.executor": "Run",
+    "Application.practice04.Main.executor": "Run",
+    "Application.practice05.Main.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "#13 on feat/20263949__LeeYoonGun",
+    "kotlin-language-version-configured": "true",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0"
+  }
+}]]></component>
+  <component name="RunManager" selected="Application.practice05.Main">
+    <configuration name="practice01.Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="practice01.Main" />
+      <module name="java-2026" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="practice01.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="practice02.Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="practice02.Main" />
+      <module name="java-2026" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="practice02.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="practice03.Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="practice03.Main" />
+      <module name="java-2026" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="practice03.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="practice04.Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="practice04.Main" />
+      <module name="java-2026" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="practice04.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="practice05.Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="practice05.Main" />
+      <module name="java-2026" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="practice05.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.practice05.Main" />
+        <item itemvalue="Application.practice04.Main" />
+        <item itemvalue="Application.practice03.Main" />
+        <item itemvalue="Application.practice02.Main" />
+        <item itemvalue="Application.practice01.Main" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="디폴트 작업">
+      <changelist id="4b87f0e9-cba0-43e3-a27b-1c163ddfce4a" name="변경" comment="" />
+      <created>1774959755162</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1774959755162</updated>
+    </task>
+    <task id="LOCAL-00001" summary="test">
+      <option name="closed" value="true" />
+      <created>1778915918470</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1778915918470</updated>
+    </task>
+    <task id="LOCAL-00002" summary="feat: 01 Main&#10;&#10;옵션과 금액은 일단.. 하드 코딩했습니당..">
+      <option name="closed" value="true" />
+      <created>1778917622871</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1778917622871</updated>
+    </task>
+    <task id="LOCAL-00003" summary="feat: 02 Main">
+      <option name="closed" value="true" />
+      <created>1778919333831</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1778919333831</updated>
+    </task>
+    <task id="LOCAL-00004" summary="feat: 03 Main">
+      <option name="closed" value="true" />
+      <created>1778920057292</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1778920057292</updated>
+    </task>
+    <task id="LOCAL-00005" summary="feat: 04 Main">
+      <option name="closed" value="true" />
+      <created>1778920509618</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1778920509618</updated>
+    </task>
+    <task id="LOCAL-00006" summary="feat: 05 Main">
+      <option name="closed" value="true" />
+      <created>1778924134072</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1778924134072</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="test" />
+    <MESSAGE value="feat: 01 Main&#10;&#10;옵션과 금액은 일단.. 하드 코딩했습니당.." />
+    <MESSAGE value="feat: 02 Main" />
+    <MESSAGE value="feat: 03 Main" />
+    <MESSAGE value="feat: 04 Main" />
+    <MESSAGE value="feat: 05 Main" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: 05 Main" />
+  </component>
+</project>
