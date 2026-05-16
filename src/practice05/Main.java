@@ -55,26 +55,26 @@ public class Main {
 
 
         // TODO 4: 지역별 주문 건수를 구하시오
-        List<String> regions = new ArrayList<>();           //주소
+        List<String> regions = new ArrayList<>();               //주소
         List<Integer> regionsCount = new ArrayList<>();         //주소별 개수
 
         for (Order order : orders) {
-            int spaceIdx = order.getRegion().indexOf(" ");
+            int spaceIdx = order.getRegion().indexOf(" ");      //주소를 스페이스바로 나누기.
 
-            if(!regions.contains(order.getRegion().substring(0, spaceIdx))) {
-                regions.add(order.getRegion().substring(0, spaceIdx));
-                regionsCount.add(1);
+            if(!regions.contains(order.getRegion().substring(0, spaceIdx))) {   //regions 에 주소 앞자리가 없다면.
+                regions.add(order.getRegion().substring(0, spaceIdx));          //regions 에 주소 앞자리 추가
+                regionsCount.add(1);                                            //regionsCount 값 1 추가(새로운 주소는 마지막 위치에 추가. region과 같은 index에 들어가짐.)
             }
             else {
-                int index = regions.indexOf(order.getRegion().substring(0, spaceIdx));
-                regionsCount.set(index, index+1);
+                int index = regions.indexOf(order.getRegion().substring(0, spaceIdx));  //regions 에 이미 있는 값이니 regions에 있는 값에 index 값고 옴.
+                regionsCount.set(index, index+1);                                       //regions 와 regionCount 에 index는 연동 되니 regions 에서 갖고 온 index에 값 1 추가
             }
         }
 
         System.out.println("--- 지역별 주문 건수 ---");
 
         for (int i = 0; i < regions.size(); i++) {
-            System.out.println(regions.get(i)+": "+regionsCount.get(i)+"건");
+            System.out.println(regions.get(i)+": "+regionsCount.get(i)+"건");    //둘은 index가 같으니 가능함.
         }
         System.out.println("========================\n");
 
