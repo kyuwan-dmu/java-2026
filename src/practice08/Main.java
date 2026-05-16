@@ -25,13 +25,17 @@ public class Main {
         int totalSales = orders.stream()
                 .mapToInt(Order::getPrice)
                 .sum();
-        System.out.println("전체 매출 합계: " + String.format("%,d", totalSales) + "원\n");
+        System.out.println(String.format("%,d", totalSales) + "원\n");
+
         // TODO 3: Stream으로 상품금액 내림차순 상위 5건을 출력하시오
         System.out.println("===== 3. 금액 상위 5건 =====\n");
-        orders.stream()
+        List<Order> top5 = orders.stream()
                 .sorted(Comparator.comparingInt(Order::getPrice).reversed())
                 .limit(5)
-                .forEach(System.out::println);
+                .toList();
+        for (int i = 0; i < top5.size(); i++) {
+            System.out.printf(" %d. %s%n", i + 1, top5.get(i));
+        }
         System.out.println("============================\n");
         // TODO 4: Stream으로 브랜드별 주문 건수를 집계하시오
         System.out.println("===== 4. 브랜드별 주문 건수 =====\n");

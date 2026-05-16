@@ -23,32 +23,19 @@ public class Main {
             productCount.put(order.getProductName(), productCount.getOrDefault(order.getProductName(), 0) + 1);
         }
 
-        // TODO 1: 브랜드별 주문 건수를 Map으로 집계하시오
-        System.out.println("===== 브랜드별 주문 건수 =====\n");
-        for (Map.Entry<String, Integer> entry : brandCount.entrySet()) {
-            System.out.println(entry.getKey() + ": " + entry.getValue() + "건");
-        }
-        System.out.println("============================\n");
-
-        // TODO 2: 브랜드별 매출 합계를 Map으로 집계하시오
-        System.out.println("===== 브랜드별 매출 합계 =====\n");
-        for (Map.Entry<String, Integer> entry : brandSales.entrySet()) {
-            System.out.println(entry.getKey() + ": " + String.format("%,d", entry.getValue()) + "원");
-        }
-        System.out.println("============================\n");
-
-        // TODO 3: 지역별 주문 건수를 Map으로 집계하시오
-        System.out.println("===== 지역별 주문 건수 =====\n");
-        for (Map.Entry<String, Integer> entry : regionCount.entrySet()) {
-            System.out.println(entry.getKey() + ": " + entry.getValue() + "건");
-        }
-        System.out.println("============================\n");
+        // TODO 1~3: Map 집계 (brandCount, brandSales, regionCount)
 
         // TODO 4: 각 Map의 내용을 출력하시오
         System.out.println("===== 브랜드별 주문 건수 =====\n");
-        for (Map.Entry<String, Integer> entry : brandCount.entrySet()) {
-            System.out.println(entry.getKey() + ": " + entry.getValue() + "건");
-        }
+        printCountMap(brandCount);
+        System.out.println("============================\n");
+
+        System.out.println("===== 브랜드별 매출 합계 =====\n");
+        printSalesMap(brandSales);
+        System.out.println("============================\n");
+
+        System.out.println("===== 지역별 주문 건수 =====\n");
+        printCountMap(regionCount);
         System.out.println("============================\n");
 
         // TODO 5: (추가) 상품명별 주문 건수 상위 3개를 출력하시오
@@ -60,6 +47,18 @@ public class Main {
         for (int i = 0; i < topCount; i++) {
             Map.Entry<String, Integer> entry = productRanking.get(i);
             System.out.println((i + 1) + ". " + entry.getKey() + ": " + entry.getValue() + "건");
+        }
+    }
+
+    private static void printCountMap(Map<String, Integer> map) {
+        for (Map.Entry<String, Integer> entry : map.entrySet()) {
+            System.out.println(entry.getKey() + ": " + entry.getValue() + "건");
+        }
+    }
+
+    private static void printSalesMap(Map<String, Integer> map) {
+        for (Map.Entry<String, Integer> entry : map.entrySet()) {
+            System.out.println(entry.getKey() + ": " + String.format("%,d", entry.getValue()) + "원");
         }
     }
 }
