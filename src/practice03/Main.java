@@ -6,10 +6,9 @@ import model.Order;
 public class Main {
 
     public static void main(String[] args) {
-        // 데이터 불러오기
+        // 리스트를 활용한 풀이도 해보기
         Order[] orders = OrderDataProvider.getOrdersAsArray();
         Order[] selectedOrders = new Order[orders.length];
-        // TODO 1: 브랜드가 "바디홀릭"인 주문만 출력하시오
         int index = 0;
         int totalPrice = 0;
         int orderCount = 0;
