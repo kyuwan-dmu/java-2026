@@ -21,7 +21,7 @@ public class Main {
         System.out.println("금액: "+String.format("%,d",orders[0].getPrice()));
         System.out.println("주문일: "+orders[0].getOrderDate());
         System.out.println("상태: "+orders[0].getStatus());
-        System.out.println("상태: "+orders[0].getRegion());
+        System.out.println("지역: "+orders[0].getRegion());
         System.out.println("====================");
 
 
