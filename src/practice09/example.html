@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Practice 09 — 사은품 지급 이벤트 결과 예시</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', -apple-system, sans-serif;
+            background: #f0f2f5;
+            color: #1a1a2e;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .header h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+        .header p { font-size: 16px; opacity: 0.9; margin-bottom: 20px; }
+
+        .toggle-btn {
+            display: inline-block;
+            padding: 12px 32px;
+            border-radius: 30px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            border: 2px solid white;
+            background: transparent;
+            color: white;
+            transition: all 0.3s;
+        }
+
+        .toggle-btn:hover {
+            background: white;
+            color: #6366f1;
+        }
+
+        .toggle-btn.active {
+            background: white;
+            color: #6366f1;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        /* ===== 콘솔 뷰 ===== */
+        .console-view {
+            background: #1e1e2e;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+
+        .console-titlebar {
+            background: #181825;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .console-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .console-dot.red { background: #f38ba8; }
+        .console-dot.yellow { background: #f9e2af; }
+        .console-dot.green { background: #a6e3a1; }
+
+        .console-title {
+            color: #6c7086;
+            font-size: 13px;
+            margin-left: 8px;
+            font-family: monospace;
+        }
+
+        .console-body {
+            padding: 24px;
+            font-family: 'Cascadia Code', 'Fira Code', 'D2Coding', 'Consolas', monospace;
+            font-size: 13px;
+            line-height: 1.8;
+            color: #cdd6f4;
+            overflow-x: auto;
+            white-space: pre;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .c-section { color: #f9e2af; font-weight: bold; }
+        .c-label { color: #a6e3a1; }
+        .c-gift { color: #f38ba8; }
+        .c-info { color: #89b4fa; }
+        .c-dim { color: #585b70; }
+
+        /* ===== 시각화 뷰 ===== */
+        .visual-view { display: none; }
+
+        .section {
+            background: white;
+            border-radius: 16px;
+            padding: 28px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            overflow-x: auto;
+        }
+
+        .section h2 {
+            font-size: 20px;
+            margin-bottom: 6px;
+            color: #4338ca;
+        }
+
+        .section .desc {
+            font-size: 14px;
+            color: #6b7280;
+            margin-bottom: 20px;
+        }
+
+        .section-divider {
+            text-align: center;
+            padding: 16px 0;
+        }
+
+        .section-divider span {
+            display: inline-block;
+            background: #6366f1;
+            color: white;
+            padding: 8px 24px;
+            border-radius: 24px;
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        thead th {
+            background: #f8fafc;
+            padding: 12px 14px;
+            text-align: left;
+            font-weight: 600;
+            color: #64748b;
+            border-bottom: 2px solid #e2e8f0;
+            white-space: nowrap;
+        }
+
+        tbody td {
+            padding: 9px 14px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        tbody tr:hover { background: #fafbff; }
+
+        .price {
+            font-weight: 600;
+            text-align: right;
+            white-space: nowrap;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .badge.perfume { background: #fef3c7; color: #92400e; }
+        .badge.sample { background: #d1fae5; color: #065f46; }
+        .badge.none { background: #f3f4f6; color: #9ca3af; }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+            margin-bottom: 8px;
+        }
+
+        .card {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid #e2e8f0;
+        }
+
+        .card .number { font-size: 32px; font-weight: 800; }
+        .card .label { font-size: 13px; color: #6b7280; margin-top: 4px; }
+        .card.c1 .number { color: #6366f1; }
+        .card.c2 .number { color: #3b82f6; }
+        .card.c3 .number { color: #f59e0b; }
+        .card.c4 .number { color: #10b981; }
+
+        .region-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .chip {
+            background: #ede9fe;
+            color: #5b21b6;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .chip.total {
+            background: #f3e8ff;
+            color: #7c3aed;
+            font-weight: 700;
+        }
+
+        .row-dimmed { opacity: 0.35; }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #9ca3af;
+            font-size: 13px;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 { font-size: 22px; }
+            .summary-grid { grid-template-columns: repeat(2, 1fr); }
+            .btn-group { flex-direction: column; align-items: center; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>Practice 09 — 사은품 지급 이벤트</h1>
+    <p>여러분의 프로그램이 아래와 같은 결과를 출력해야 합니다</p>
+    <div class="btn-group">
+        <button class="toggle-btn active" onclick="showView('console')">콘솔 출력</button>
+        <button class="toggle-btn" onclick="showView('visual')">시각화 보기</button>
+    </div>
+</div>
+
+<div class="container">
+
+    <!-- ===== 콘솔 뷰 ===== -->
+    <div class="console-view" id="consoleView">
+        <div class="console-titlebar">
+            <div class="console-dot red"></div>
+            <div class="console-dot yellow"></div>
+            <div class="console-dot green"></div>
+            <span class="console-title">practice09.Main — 실행 결과</span>
+        </div>
+        <div class="console-body" id="consoleBody"></div>
+    </div>
+
+    <!-- ===== 시각화 뷰 ===== -->
+    <div class="visual-view" id="visualView">
+
+        <div class="section">
+            <h2>주문 데이터</h2>
+            <p class="desc">orders.csv에서 불러온 전체 주문 목록</p>
+            <table>
+                <thead>
+                    <tr><th>#</th><th>주문번호</th><th>브랜드</th><th>상품명</th><th>금액</th><th>지역</th></tr>
+                </thead>
+                <tbody id="rawDataBody"></tbody>
+            </table>
+        </div>
+
+        <div class="section-divider"><span>아래는 요구사항대로 처리했을 때 나와야 할 결과입니다</span></div>
+
+        <div class="section">
+            <h2>1. 사은품 대상 주문 수 / 전체 주문 수</h2>
+            <div class="summary-grid" id="countCards"></div>
+        </div>
+
+        <div class="section">
+            <h2>2. 사은품 종류별 건수</h2>
+            <div class="summary-grid" id="giftCards"></div>
+        </div>
+
+        <div class="section">
+            <h2>3. 대상 주문 목록</h2>
+            <p class="desc">대상이 아닌 주문은 흐리게 표시</p>
+            <table>
+                <thead>
+                    <tr><th>#</th><th>주문번호</th><th>브랜드</th><th>상품명</th><th>금액</th><th>사은품</th></tr>
+                </thead>
+                <tbody id="giftTableBody"></tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2>4. 사은품 배송 지역 (중복 제거)</h2>
+            <div class="region-chips" id="regionChips"></div>
+        </div>
+    </div>
+
+    <div class="footer">Practice 09 — 객체지향프로그래밍 실습</div>
+</div>
+
+<script>
+const orders = [
+    {id:"2596171645",product:"스테이누디 디스커버리 세트 (20ml*6종)",brand:"바디홀릭",price:20000,region:"경기 안산시"},
+    {id:"2595224571",product:"스테이누디 디스커버리 세트 (20ml*6종)",brand:"바디홀릭",price:20000,region:"울산 남구"},
+    {id:"2595981211",product:"스테이누디 디스커버리 세트 (20ml*6종)",brand:"바디홀릭",price:20000,region:"경북 안동시"},
+    {id:"2592130064",product:"스테이누디 라인 바디미스트 6종",brand:"바디홀릭",price:12900,region:"경기 성남시"},
+    {id:"2596159263",product:"더 퍼스트 펜 아이라이너 3종",brand:"머지",price:9900,region:"전북 정읍시"},
+    {id:"2596203657",product:"아이 메이크업 브러시 세트 5종",brand:"머지",price:12900,region:"강원 춘천시"},
+    {id:"2596197212",product:"스테이누디 디스커버리 세트 (20ml*6종)",brand:"바디홀릭",price:20000,region:"경남 하동군"},
+    {id:"2595392260",product:"스테이누디 디스커버리 세트 (20ml*6종)",brand:"바디홀릭",price:20000,region:"전남 목포시"},
+    {id:"2596078276",product:"스테이누디 디스커버리 세트 (20ml*6종)",brand:"바디홀릭",price:20000,region:"인천 연수구"},
+    {id:"2594480214",product:"포션 바디미스트 50ml",brand:"바디홀릭",price:8900,region:"경남 창원시"},
+    {id:"2596151774",product:"스테이누디 디스커버리 세트 (20ml*6종)",brand:"바디홀릭",price:20000,region:"부산 동래구"},
+    {id:"2592590527",product:"스테이누디 라인 바디미스트 6종",brand:"바디홀릭",price:12900,region:"경북 경주시"},
+    {id:"2595734660",product:"스테이누디 센티드 핸드워시 270ml",brand:"바디홀릭",price:9900,region:"경기 용인시"},
+    {id:"2596213318",product:"다우트리스 바디미스트 3종 (2개)",brand:"바디홀릭",price:22500,region:"서울 광진구"},
+    {id:"2596270226",product:"스테이누디 라인 바디미스트 6종",brand:"바디홀릭",price:12900,region:"충남 서천군"},
+    {id:"2593979946",product:"다우트리스 바디미스트 3종",brand:"바디홀릭",price:12900,region:"서울 강서구"},
+    {id:"2596356875",product:"윈디 팝 아이 글리터 (4종)",brand:"머지",price:13900,region:"경기 화성시"},
+    {id:"2596357071",product:"스테이누디 디스커버리 세트 (20ml*6종)",brand:"바디홀릭",price:20000,region:"인천 미추홀구"},
+    {id:"2595847675",product:"스테이누디 디스커버리 세트 (20ml*6종)",brand:"바디홀릭",price:20000,region:"울산 울주군"},
+    {id:"2596382866",product:"스테이누디 디스커버리 세트 (20ml*6종)",brand:"바디홀릭",price:20000,region:"부산 사하구"},
+    {id:"2589761084",product:"스테이누디 디스커버리 세트 (20ml*6종)",brand:"바디홀릭",price:20000,region:"경기 부천시"},
+    {id:"2595687742",product:"스테이누디 디스커버리 세트 (20ml*6종)",brand:"바디홀릭",price:20000,region:"경북 구미시"},
+    {id:"2596256469",product:"스테이누디 라인 바디미스트 6종 (2개)",brand:"바디홀릭",price:22900,region:"충남 아산시"},
+    {id:"2595846107",product:"스테이누디 라인 바디미스트 6종",brand:"바디홀릭",price:12900,region:"경기 수원시"},
+    {id:"2596231994",product:"스테이누디 디스커버리 세트 (20ml*6종)",brand:"바디홀릭",price:20000,region:"경기 성남시"},
+    {id:"2596424769",product:"스테이누디 디스커버리 세트 (20ml*6종)",brand:"바디홀릭",price:20000,region:"대구 달성군"},
+    {id:"2596433743",product:"스테이누디 라인 바디미스트 6종 (2개)",brand:"바디홀릭",price:22900,region:"강원특별자치도 춘천시"},
+    {id:"2592803727",product:"스테이누디 라인 바디미스트 6종",brand:"바디홀릭",price:12900,region:"서울 양천구"},
+    {id:"2593189905",product:"스테이누디 디스커버리 세트 (20ml*6종)",brand:"바디홀릭",price:20000,region:"대구 동구"},
+    {id:"2595161030",product:"스테이누디 디스커버리 세트 (20ml*6종)",brand:"바디홀릭",price:20000,region:"경기 시흥시"},
+    {id:"2596230141",product:"스테이누디 디스커버리 세트 (20ml*6종)",brand:"바디홀릭",price:20000,region:"울산 울주군"},
+    {id:"2596481873",product:"스테이누디 디스커버리 세트 (20ml*6종)",brand:"바디홀릭",price:20000,region:"전북 전주시"},
+    {id:"2596468396",product:"이지드로잉 젤 아이라이너",brand:"머지",price:9900,region:"대구 달성군"},
+    {id:"2596032308",product:"스테이누디 라인 바디미스트 6종",brand:"바디홀릭",price:12900,region:"울산 중구"},
+    {id:"2595255928",product:"스테이누디 디스커버리 세트 (20ml*6종)",brand:"바디홀릭",price:20000,region:"인천 서구"},
+    {id:"2596512707",product:"포션 바디미스트 50ml",brand:"바디홀릭",price:8900,region:"경기 수원시"},
+    {id:"2596354884",product:"스테이누디 디스커버리 세트 (20ml*6종)",brand:"바디홀릭",price:20000,region:"경기 수원시"},
+    {id:"2596420050",product:"스테이누디 디스커버리 세트 (20ml*6종)",brand:"바디홀릭",price:20000,region:"서울 양천구"},
+    {id:"2596362143",product:"스테이누디 디스커버리 세트 (20ml*6종)",brand:"바디홀릭",price:20000,region:"서울 구로구"},
+    {id:"2595719939",product:"다우트리스 바디미스트 3종",brand:"바디홀릭",price:12900,region:"경기 시흥시"},
+    {id:"2596511463",product:"스테이누디 디스커버리 세트 (20ml*6종)",brand:"바디홀릭",price:20000,region:"부산 동구"},
+    {id:"2596487721",product:"스테이누디 라인 바디미스트 6종",brand:"바디홀릭",price:12900,region:"경기 안산시"},
+    {id:"2590528525",product:"스테이누디 디스커버리 세트 (20ml*6종)",brand:"바디홀릭",price:20000,region:"경기 평택시"},
+    {id:"2596538229",product:"포션 바디미스트 50ml",brand:"바디홀릭",price:13900,region:"경기 광주시"},
+    {id:"2596493551",product:"포션 바디미스트 50ml",brand:"바디홀릭",price:13900,region:"인천 동구"},
+    {id:"2596544715",product:"스테이누디 라인 바디미스트 6종",brand:"바디홀릭",price:12900,region:"경기 남양주시"},
+    {id:"2591239703",product:"스테이누디 라인 바디미스트 6종",brand:"바디홀릭",price:12900,region:"경기 용인시"},
+    {id:"2596464917",product:"스테이누디 디스커버리 세트 (20ml*6종)",brand:"바디홀릭",price:20000,region:"서울 은평구"},
+    {id:"2596550183",product:"스테이누디 라인 바디미스트 6종",brand:"바디홀릭",price:12900,region:"전남 목포시"},
+    {id:"2596167264",product:"스테이누디 디스커버리 세트 (20ml*6종)",brand:"바디홀릭",price:20000,region:"충남 당진시"},
+    {id:"2596431782",product:"스테이누디 라인 바디미스트 6종",brand:"바디홀릭",price:12900,region:"대전 대덕구"},
+    {id:"2596509732",product:"포션 바디미스트 50ml",brand:"바디홀릭",price:13900,region:"부산 서구"},
+    {id:"2596535422",product:"스테이누디 디스커버리 세트 (20ml*6종)",brand:"바디홀릭",price:20000,region:"전북 군산시"},
+    {id:"2596521794",product:"스테이누디 디스커버리 세트 (20ml*6종)",brand:"바디홀릭",price:20000,region:"대구 달서구"},
+    {id:"2594641096",product:"스테이누디 디스커버리 세트 (20ml*6종)",brand:"바디홀릭",price:20000,region:"강원특별자치도 강릉시"},
+    {id:"2596584496",product:"더 퍼스트 젤 아이라이너 10종",brand:"머지",price:9900,region:"서울 양천구"},
+    {id:"2596111268",product:"아이 메이크업 브러시 세트 5종",brand:"머지",price:12900,region:"전북 전주시"},
+    {id:"2593373883",product:"스테이누디 라인 바디미스트 6종",brand:"바디홀릭",price:12900,region:"경남 창원시"},
+    {id:"2593065703",product:"스테이누디 디스커버리 세트 (20ml*6종)",brand:"바디홀릭",price:20000,region:"울산 남구"},
+    {id:"2596573490",product:"스테이누디 디스커버리 세트 (20ml*6종)",brand:"바디홀릭",price:20000,region:"경기 남양주시"},
+    {id:"2595056987",product:"스테이누디 라인 바디미스트 6종",brand:"바디홀릭",price:12900,region:"부산 강서구"},
+    {id:"2596490982",product:"더 퍼스트 펜 아이라이너 3종",brand:"머지",price:9900,region:"인천 서구"},
+    {id:"2596444191",product:"스테이누디 디스커버리 세트 (20ml*6종)",brand:"바디홀릭",price:20000,region:"대전 유성구"},
+    {id:"2596612570",product:"다우트리스 바디미스트 3종",brand:"바디홀릭",price:12900,region:"경기 광주시"},
+    {id:"2596654546",product:"스테이누디 디스커버리 세트 (20ml*6종)",brand:"바디홀릭",price:20000,region:"경기 평택시"},
+    {id:"2595610456",product:"스테이누디 라인 바디미스트 6종",brand:"바디홀릭",price:12900,region:"전북특별자치도 전주시"},
+    {id:"2595180496",product:"스테이누디 디스커버리 세트 (20ml*6종)",brand:"바디홀릭",price:20000,region:"울산 동구"},
+    {id:"2596688910",product:"스테이누디 라인 바디미스트 6종",brand:"바디홀릭",price:12900,region:"서울 강남구"},
+    {id:"2595723911",product:"스테이누디 디스커버리 세트 (20ml*6종)",brand:"바디홀릭",price:20000,region:"서울 동작구"},
+    {id:"2596571141",product:"스테이누디 디스커버리 세트 (20ml*6종)",brand:"바디홀릭",price:20000,region:"경북 상주시"},
+    {id:"2596736024",product:"스테이누디 디스커버리 세트 (20ml*6종)",brand:"바디홀릭",price:60000,region:"경기 이천시"},
+    {id:"2595624654",product:"스테이누디 라인 바디미스트 6종",brand:"바디홀릭",price:12900,region:"대구 달서구"},
+    {id:"2596743658",product:"더 퍼스트 슬림 젤 아이라이너 5종",brand:"머지",price:9900,region:"서울 송파구"},
+    {id:"2596612046",product:"포셀린 치크 블러셔 4종",brand:"머지",price:12000,region:"충북 청주시"}
+];
+
+// --- 처리 ---
+const giftOrders = [];
+const giftMap = {};
+const regionSet = new Set();
+
+for (const order of orders) {
+    if (order.price >= 20000) {
+        giftOrders.push(order);
+        giftMap[order.id] = "미니 향수 세트";
+        regionSet.add(order.region);
+    } else if (order.price >= 10000) {
+        giftOrders.push(order);
+        giftMap[order.id] = "샘플 키트";
+        regionSet.add(order.region);
+    }
+}
+
+const perfumeCount = Object.values(giftMap).filter(v => v === "미니 향수 세트").length;
+const sampleCount = Object.values(giftMap).filter(v => v === "샘플 키트").length;
+const regions = [...regionSet].sort();
+const fmt = n => n.toLocaleString();
+
+// ===== 콘솔 출력 생성 =====
+const L = [];
+L.push('<span class="c-section">===== 사은품 지급 이벤트 처리 =====</span>');
+L.push('');
+L.push(`<span class="c-label">[대상 주문 수]</span> ${giftOrders.length}건 / 전체 ${orders.length}건`);
+L.push('');
+L.push('<span class="c-label">[사은품별 건수]</span>');
+L.push(`미니 향수 세트: ${perfumeCount}건`);
+L.push(`샘플 키트: ${sampleCount}건`);
+L.push('');
+L.push('<span class="c-label">[대상 주문 목록]</span>');
+for (const o of giftOrders) {
+    const gift = giftMap[o.id];
+    L.push(`주문번호: <span class="c-info">${o.id}</span> | [${o.brand}] ${o.product} - ${fmt(o.price)}원 → <span class="c-gift">${gift}</span>`);
+}
+L.push('');
+L.push('<span class="c-label">[사은품 배송 지역 (중복 제거)]</span>');
+L.push(regions.join(', '));
+L.push(`총 ${regions.length}개 지역`);
+
+document.getElementById("consoleBody").innerHTML = L.join('\n');
+
+// ===== 시각화 렌더링 =====
+document.getElementById("rawDataBody").innerHTML = orders.map((o, i) => `
+    <tr>
+        <td>${i + 1}</td><td>${o.id}</td><td>${o.brand}</td>
+        <td>${o.product}</td><td class="price">${fmt(o.price)}원</td><td>${o.region}</td>
+    </tr>`).join('');
+
+document.getElementById("countCards").innerHTML = `
+    <div class="card c1"><div class="number">${orders.length}건</div><div class="label">전체 주문</div></div>
+    <div class="card c2"><div class="number">${giftOrders.length}건</div><div class="label">사은품 대상</div></div>
+    <div class="card" style="border:2px dashed #e2e8f0;"><div class="number" style="color:#9ca3af;">${orders.length - giftOrders.length}건</div><div class="label">대상 아님</div></div>`;
+
+document.getElementById("giftCards").innerHTML = `
+    <div class="card c3"><div class="number">${perfumeCount}건</div><div class="label">미니 향수 세트 (20,000원 이상)</div></div>
+    <div class="card c4"><div class="number">${sampleCount}건</div><div class="label">샘플 키트 (10,000원 ~ 19,999원)</div></div>`;
+
+document.getElementById("giftTableBody").innerHTML = orders.map((o, i) => {
+    const gift = giftMap[o.id];
+    const cls = o.price >= 20000 ? 'perfume' : (o.price >= 10000 ? 'sample' : 'none');
+    return `<tr class="${!gift ? 'row-dimmed' : ''}">
+        <td>${i + 1}</td><td>${o.id}</td><td>${o.brand}</td>
+        <td>${o.product}</td><td class="price">${fmt(o.price)}원</td>
+        <td><span class="badge ${cls}">${gift || '대상 아님'}</span></td>
+    </tr>`;
+}).join('');
+
+document.getElementById("regionChips").innerHTML =
+    regions.map(r => `<div class="chip">${r}</div>`).join('') +
+    `<div class="chip total">총 ${regions.length}개 지역</div>`;
+
+// ===== 뷰 토글 =====
+function showView(mode) {
+    const btns = document.querySelectorAll('.toggle-btn');
+    btns[0].classList.toggle('active', mode === 'console');
+    btns[1].classList.toggle('active', mode === 'visual');
+    document.getElementById('consoleView').style.display = mode === 'console' ? 'block' : 'none';
+    document.getElementById('visualView').style.display = mode === 'visual' ? 'block' : 'none';
+}
+</script>
+
+</body>
+</html>
