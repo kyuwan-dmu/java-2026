@@ -1,47 +1,133 @@
 package practice09;
 
 import data.OrderDataProvider;
-import model.Order;
-
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
+import model.Order;
 
 public class Main {
 
+    private static final int PERFUME_PRICE = 20000;
+    private static final int SAMPLE_PRICE = 10000;
+
+    private static final String GIFT_PERFUME = "미니 향수 세트";
+    private static final String GIFT_SAMPLE = "샘플 키트";
+    private static final String GIFT_NONE = "(사은품 정보 없음)";
+
     public static void main(String[] args) {
-        // 데이터 불러오기
         List<Order> orders = OrderDataProvider.getOrdersAsList();
 
-        // 사은품 대상 주문을 담을 ArrayList
-        ArrayList<Order> giftOrders = new ArrayList<>();
+        if (orders == null || orders.isEmpty()) {
+            System.out.println("주문 데이터가 없습니다. resources/orders.csv를 확인하세요.");
+            return;
+        }
 
-        // 주문번호 → 사은품 이름을 저장할 HashMap
-        HashMap<String, String> giftMap = new HashMap<>();
+        GiftResult result = classifyOrders(orders);
 
-        // 사은품 배송이 필요한 지역을 저장할 HashSet (중복 자동 제거)
-        HashSet<String> regions = new HashSet<>();
+        printSummary(result, orders.size());
+        printGiftCounts(result.giftMap);
+        printGiftOrders(result);
+        printRegions(result.regions);
+    }
 
-        // TODO 1: for문으로 전체 주문을 순회하면서 사은품 대상을 처리하시오
-        //   - 20,000원 이상 → giftOrders에 추가, giftMap에 "미니 향수 세트" 저장, regions에 지역 추가
-        //   - 10,000원 이상 ~ 20,000원 미만 → giftOrders에 추가, giftMap에 "샘플 키트" 저장, regions에 지역 추가
-        //   - 10,000원 미만 → 아무 처리 안 함
+    /**
+     * 주문 가격에 따라 사은품을 분류해 결과를 모은다.
+     */
+    private static GiftResult classifyOrders(List<Order> orders) {
+        GiftResult result = new GiftResult();
 
+        for (Order order : orders) {
+            if (order == null) {
+                continue;
+            }
 
-        // TODO 2: 대상 주문 수 출력 (예: "[대상 주문 수] 66건 / 전체 74건")
+            String gift = decideGift(order.getPrice());
+            if (gift == null) {
+                continue;
+            }
 
+            result.giftOrders.add(order);
+            result.giftMap.put(order.getOrderId(), gift);
+            result.regions.add(order.getRegion());
+        }
+        return result;
+    }
 
-        // TODO 3: 사은품 종류별 건수 출력
-        //   힌트: giftMap의 value들을 순회하면서 "미니 향수 세트" 개수와 "샘플 키트" 개수를 세기
+    /**
+     * 가격에 해당하는 사은품 이름. 대상이 아니면 null.
+     */
+    private static String decideGift(int price) {
+        if (price >= PERFUME_PRICE) {
+            return GIFT_PERFUME;
+        }
+        if (price >= SAMPLE_PRICE) {
+            return GIFT_SAMPLE;
+        }
+        return null;
+    }
 
+    private static void printSummary(GiftResult result, int totalCount) {
+        System.out.println("[대상 주문 수] " + result.giftOrders.size() + "건 / 전체 " + totalCount + "건");
+    }
 
-        // TODO 4: 대상 주문 목록 출력
-        //   힌트: giftOrders를 순회하면서 giftMap.get(order.getOrderId())로 사은품 이름을 꺼내기
+    private static void printGiftCounts(Map<String, String> giftMap) {
+        int perfumeCount = 0;
+        int sampleCount = 0;
+        for (String gift : giftMap.values()) {
+            if (GIFT_PERFUME.equals(gift)) {
+                perfumeCount++; 
+            }
+            if (GIFT_SAMPLE.equals(gift)) {
+                sampleCount++;
+            }
+        }
+        System.out.println("[사은품별 건수]");
+        System.out.println(GIFT_PERFUME + ": " + perfumeCount + "건");
+        System.out.println(GIFT_SAMPLE + ": " + sampleCount + "건");
+    }
 
+    private static void printGiftOrders(GiftResult result) {
+        System.out.println("[대상 주문 목록]");
 
-        // TODO 5: 사은품 배송 지역 목록 출력 (중복 없이)
-        //   힌트: regions를 순회하면서 출력, regions.size()로 총 지역 수 출력
+        result.giftOrders.sort(Comparator.comparing(
+                Order::getOrderId,
+                Comparator.nullsLast(Comparator.naturalOrder())
+        ));
 
+        for (Order order : result.giftOrders) {
+            String gift = result.giftMap.getOrDefault(order.getOrderId(), GIFT_NONE);
+            System.out.println(
+                    "주문번호: " + order.getOrderId()
+                    + " | [" + order.getBrand() + "] " + order.getProductName()
+                    + " - " + String.format("%,d", order.getPrice()) + "원"
+                    + " → " + gift
+            );
+        }
+    }
+
+    private static void printRegions(Set<String> regions) {
+        System.out.println("[사은품 배송 지역 (중복 제거)]");
+
+        Set<String> sorted = new TreeSet<>(regions);
+        for (String region : sorted) {
+            System.out.print(region + ", ");
+        }
+        System.out.println("총 " + regions.size() + "개 지역");
+    }
+
+    /**
+     * 분류 결과 3종(주문 목록, 주문번호→사은품, 지역)을 묶는다.
+     */
+    private static class GiftResult {
+
+        final List<Order> giftOrders = new ArrayList<>();
+        final Map<String, String> giftMap = new HashMap<>();
+        final Set<String> regions = new HashSet<>();
     }
 }
