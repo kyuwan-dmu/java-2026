@@ -18,7 +18,7 @@ public class Main {
     public static void main(String[] args) {
         List<Order> orders = OrderDataProvider.getOrdersAsList();
 
-        if (orders == null || orders.isEmpty()) {
+        if (orders.isEmpty()) {
             System.out.println("주문 데이터가 없습니다. resources/orders.csv를 확인하세요.");
             return;
         }
@@ -39,7 +39,7 @@ public class Main {
         GiftResult result = new GiftResult();
 
         for (Order order : orders) {
-            if (order == null || isNotEligible(order)) {
+            if (isNotEligible(order)) {
                 continue;
             }
             result.giftOrders.add(order);
@@ -49,8 +49,7 @@ public class Main {
     }
 
     private static boolean isNotEligible(Order order) {
-        String gift = order.getGift();
-        return gift == null || GIFT_NONE.equals(gift);
+        return GIFT_NONE.equals(order.getGift());
     }
 
     private static void printSummary(GiftResult result, int totalCount) {
@@ -73,10 +72,7 @@ public class Main {
     private static void printGiftOrders(List<Order> giftOrders) {
         System.out.println("\n[대상 주문 목록]");
 
-        giftOrders.sort(Comparator.comparing(
-                Order::getOrderId,
-                Comparator.nullsLast(Comparator.naturalOrder())
-        ));
+        giftOrders.sort(Comparator.comparing(Order::getOrderId));
 
         for (Order order : giftOrders) {
             System.out.println(order);
