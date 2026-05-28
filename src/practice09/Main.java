@@ -39,16 +39,16 @@ public class Main {
         GiftResult result = new GiftResult();
 
         for (Order order : orders) {
-if (isEligible(order)) {
-     result.giftOrders.add(order);
-     result.regions.add(order.getRegion());
-}
-
+            if (isGiftNone(order)) {
+                continue;    
+            }
+            result.giftOrders.add(order);
+            result.regions.add(order.getRegion());
         }
         return result;
     }
 
-    private static boolean isNotEligible(Order order) {
+    private static boolean isGiftNone(Order order) {
         return GIFT_NONE.equals(order.getGift());
     }
 
