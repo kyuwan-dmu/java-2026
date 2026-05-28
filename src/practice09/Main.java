@@ -39,11 +39,11 @@ public class Main {
         GiftResult result = new GiftResult();
 
         for (Order order : orders) {
-            if (isNotEligible(order)) {
-                continue;
-            }
-            result.giftOrders.add(order);
-            result.regions.add(order.getRegion());
+if (isEligible(order)) {
+     result.giftOrders.add(order);
+     result.regions.add(order.getRegion());
+}
+
         }
         return result;
     }
