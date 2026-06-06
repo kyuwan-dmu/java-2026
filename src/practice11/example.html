@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Practice 11 — 예외 처리 데모 결과</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', -apple-system, sans-serif; background: #f0f2f5; color: #1a1a2e; line-height: 1.6; }
+
+        .header { background: linear-gradient(135deg, #6366f1, #8b5cf6); color: white; padding: 40px 20px; text-align: center; }
+        .header h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+        .header p { font-size: 16px; opacity: 0.9; margin-bottom: 20px; }
+        .btn-group { display: flex; gap: 12px; justify-content: center; }
+        .toggle-btn { padding: 12px 32px; border-radius: 30px; font-size: 15px; font-weight: 700; cursor: pointer; border: 2px solid white; background: transparent; color: white; transition: all 0.3s; }
+        .toggle-btn:hover, .toggle-btn.active { background: white; color: #6366f1; }
+
+        .container { max-width: 1080px; margin: 0 auto; padding: 30px 20px; }
+
+        /* 콘솔 뷰 */
+        .console-view { background: #1e1e2e; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.2); }
+        .console-titlebar { background: #181825; padding: 12px 16px; display: flex; align-items: center; gap: 8px; }
+        .console-dot { width: 12px; height: 12px; border-radius: 50%; }
+        .console-dot.red { background: #f38ba8; } .console-dot.yellow { background: #f9e2af; } .console-dot.green { background: #a6e3a1; }
+        .console-title { color: #6c7086; font-size: 13px; margin-left: 8px; font-family: monospace; }
+        .console-body { padding: 24px; font-family: 'Cascadia Code','D2Coding','Consolas',monospace; font-size: 13px; line-height: 1.8; color: #cdd6f4; overflow: auto; white-space: pre; max-height: 78vh; }
+        .c-head { color: #cba6f7; font-weight: bold; }
+        .c-section { color: #f9e2af; font-weight: bold; }
+        .c-ok { color: #a6e3a1; }
+        .c-bad { color: #f38ba8; }
+
+        /* 시각화 뷰 */
+        .visual-view { display: none; }
+        .section { background: white; border-radius: 16px; padding: 28px; margin-bottom: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); overflow-x: auto; }
+        .section h2 { font-size: 20px; margin-bottom: 6px; color: #4338ca; }
+        .section .desc { font-size: 14px; color: #6b7280; margin-bottom: 18px; }
+
+        /* 상속 트리 */
+        .tree { font-family: 'D2Coding','Consolas',monospace; font-size: 14px; }
+        .node { padding: 8px 14px; border-radius: 8px; margin: 6px 0; display: inline-block; font-weight: 600; }
+        .lvl1 { margin-left: 0; } .lvl2 { margin-left: 30px; } .lvl3 { margin-left: 60px; }
+        .n-throwable { background: #ede9fe; color: #5b21b6; }
+        .n-error { background: #fee2e2; color: #b91c1c; }
+        .n-exception { background: #dbeafe; color: #1e40af; }
+        .n-runtime { background: #ffedd5; color: #c2410c; }
+        .n-checked { background: #d1fae5; color: #065f46; }
+        .tag { font-weight: 400; font-size: 12.5px; color: #6b7280; margin-left: 8px; }
+
+        table { width: 100%; border-collapse: collapse; font-size: 14px; }
+        thead th { background: #f8fafc; padding: 12px 14px; text-align: left; font-weight: 600; color: #64748b; border-bottom: 2px solid #e2e8f0; }
+        tbody td { padding: 11px 14px; border-bottom: 1px solid #f1f5f9; vertical-align: top; }
+        tbody td:first-child { font-weight: 600; color: #475569; white-space: nowrap; }
+
+        /* 안티패턴 카드 */
+        .anti { margin-bottom: 22px; }
+        .anti h3 { font-size: 16px; color: #1f2937; margin-bottom: 4px; }
+        .anti .why { font-size: 13.5px; color: #6b7280; margin: 6px 0 12px; }
+        .codepair { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+        pre.code { font-family: 'D2Coding','Consolas',monospace; font-size: 12.5px; line-height: 1.55; padding: 14px 16px; border-radius: 10px; overflow-x: auto; white-space: pre; }
+        pre.bad  { background: #fef2f2; border: 1px solid #fecaca; color: #7f1d1d; }
+        pre.good { background: #f0fdf4; border: 1px solid #bbf7d0; color: #14532d; }
+        .stat { background: #eef2ff; border-left: 4px solid #6366f1; padding: 12px 16px; border-radius: 8px; font-size: 13.5px; color: #3730a3; margin-bottom: 22px; }
+
+        .footer { text-align: center; padding: 20px; color: #9ca3af; font-size: 13px; }
+        @media (max-width: 768px) { .header h1 { font-size: 22px; } .codepair { grid-template-columns: 1fr; } .btn-group { flex-direction: column; align-items: center; } }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>Practice 11 — 예외 처리</h1>
+    <p>Main.java 를 실행하면 나오는 결과입니다 (예외가 나도 끝까지 살아남습니다)</p>
+    <div class="btn-group">
+        <button class="toggle-btn active" onclick="showView('console')">콘솔 출력</button>
+        <button class="toggle-btn" onclick="showView('visual')">개념 + 안티패턴</button>
+    </div>
+</div>
+
+<div class="container">
+
+    <div class="console-view" id="consoleView">
+        <div class="console-titlebar">
+            <div class="console-dot red"></div><div class="console-dot yellow"></div><div class="console-dot green"></div>
+            <span class="console-title">practice11.Main — 실행 결과</span>
+        </div>
+        <div class="console-body" id="consoleBody"></div>
+    </div>
+
+    <div class="visual-view" id="visualView">
+
+        <div class="section">
+            <h2>예외 클래스 상속 구조</h2>
+            <p class="desc">모든 예외·에러의 조상은 <b>Throwable</b> 입니다</p>
+            <div class="tree">
+                <div class="node lvl1 n-throwable">Throwable</div><br>
+                <div class="node lvl2 n-error">Error <span class="tag">복구 불가 (OutOfMemoryError …)</span></div><br>
+                <div class="node lvl2 n-exception">Exception</div><br>
+                <div class="node lvl3 n-runtime">RuntimeException <span class="tag">실행 예외 · 처리 강제 X (NullPointer, Arithmetic …)</span></div><br>
+                <div class="node lvl3 n-checked">그 외 (Checked) <span class="tag">일반 예외 · 처리 강제 O (IOException …)</span></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Checked vs Runtime</h2>
+            <table>
+                <thead><tr><th>구분</th><th>일반 예외 (Checked)</th><th>실행 예외 (RuntimeException)</th></tr></thead>
+                <tbody>
+                    <tr><td>상속</td><td>Exception 바로 상속</td><td>RuntimeException 상속</td></tr>
+                    <tr><td>처리 강제</td><td><b>필수</b> (안 하면 컴파일 오류)</td><td>선택 (안 해도 컴파일 OK)</td></tr>
+                    <tr><td>의미</td><td>복구 가능한 상황</td><td>보통 코드 버그 → 수정이 정답</td></tr>
+                    <tr><td>예시</td><td>IOException, ClassNotFoundException</td><td>NullPointer, Arithmetic, NumberFormat</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2>🔥 실전 안티패턴 — "이렇게 하지 마세요"</h2>
+            <p class="desc">실제 사례에서 발견한 패턴을 익명화한 것입니다</p>
+            <div class="stat">📊 실제 어떤 프로젝트에서는 <b>catch</b> 블록이 약 <b>977곳</b>, 그중 광범위한 <code>catch (Exception)</code>이 <b>134개 파일</b>에 있었습니다.</div>
+
+            <div class="anti">
+                <h3>① 예외를 '삼키기' (빈 catch)</h3>
+                <p class="why">실패해도 catch가 아무 일도 안 해서, 사용자는 "성공" 메시지를 받습니다. 진짜 오류가 조용히 사라집니다.</p>
+                <div class="codepair">
+                    <pre class="code bad">// ❌ 실제로 있던 코드
+try {
+    sendTempPassword(user);
+    msg = "비밀번호를 전송했습니다.";
+} catch (Exception e) {
+    // 비어 있음 — 아무것도 안 함
+}</pre>
+                    <pre class="code good">// ✅ 로그 + 실패를 알림
+try {
+    sendTempPassword(user);
+    msg = "비밀번호를 전송했습니다.";
+} catch (MailException e) {
+    log.error("전송 실패 id={}", id, e);
+    msg = "전송 실패. 다시 시도하세요.";
+}</pre>
+                </div>
+            </div>
+
+            <div class="anti">
+                <h3>② 오류를 null로 숨기기</h3>
+                <p class="why">호출한 쪽은 null만 받고 '왜' 실패했는지 모릅니다. 주석엔 "로그 출력"이라는데 로그도 없습니다. null은 나중에 NPE로 터집니다.</p>
+                <div class="codepair">
+                    <pre class="code bad">// ❌ 실제로 있던 코드
+try {
+    return cancelOrder(orderNo);
+} catch (Exception e) {
+    return null;   // "로그 출력"이라 써있지만 로그 없음
+}</pre>
+                    <pre class="code good">// ✅ 로그 + 의미 있는 예외
+try {
+    return cancelOrder(orderNo);
+} catch (ApiException e) {
+    log.error("취소 실패 no={}", orderNo, e);
+    throw new OrderCancelException(orderNo, e);
+}</pre>
+                </div>
+            </div>
+
+            <div class="anti">
+                <h3>③ 너무 광범위한 catch (Exception)</h3>
+                <p class="why">예상한 예외(숫자 변환 실패)뿐 아니라 진짜 버그(NPE 등)까지 잡아 숨깁니다. 잡을 것만 구체적으로 잡으세요.</p>
+                <div class="codepair">
+                    <pre class="code bad">// ❌ 버그까지 다 삼킨다
+try {
+    int price = Integer.parseInt(s);
+} catch (Exception e) {   // NPE까지 잡힘
+    price = 0;
+}</pre>
+                    <pre class="code good">// ✅ 예상하는 예외만
+try {
+    int price = Integer.parseInt(s);
+} catch (NumberFormatException e) {
+    price = 0;
+}</pre>
+                </div>
+            </div>
+
+            <div class="anti">
+                <h3>④ (상황에 따라 OK) close() 삼키기 → try-with-resources</h3>
+                <p class="why">자원 닫기라 봐주지만 반복되고 지저분합니다. 데모 4번의 try-with-resources로 통째로 없앨 수 있습니다.</p>
+                <div class="codepair">
+                    <pre class="code bad">// △ 자원 닫기 삼키기
+} finally {
+    try { workbook.close(); }
+    catch (Exception ignore) {}
+}</pre>
+                    <pre class="code good">// ✅ 자동 close
+try (Workbook wb = create()) {
+    // ... 사용 ...
+}   // close() 자동 호출</pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">Practice 11 — 객체지향프로그래밍 실습</div>
+</div>
+
+<script>
+const raw = `########## 예외 처리 개념 데모 ##########
+예외를 일부러 발생시키고, 잡아서 처리하는 과정을 따라가 봅니다.
+
+===== 1. 예외 종류 체험하기 =====
+[ArithmeticException] 10 / 0 실행
+  → 잡힘! 메시지: / by zero
+[NullPointerException] null.length() 호출
+  → 잡힘! null 을 사용하려다 터짐
+[ArrayIndexOutOfBoundsException] 크기 3 배열의 [5] 접근
+  → 잡힘! 메시지: Index 5 out of bounds for length 3
+[NumberFormatException] "10!" 숫자 변환
+  → 잡힘! 메시지: For input string: "10!"
+
+===== 2. try-catch-finally 실행 흐름 =====
+[A] 예외가 '있을' 때
+  ① try 블록 진입
+  ② 예외 발생! catch 로 점프
+  ③ catch 처리: 0으로 나눌 수 없음
+  ④ finally 는 '항상' 실행됨 ✔
+  ⑤ 프로그램은 죽지 않고 계속 진행
+
+[B] 예외가 '없을' 때
+  ① try 블록 진입
+  ② 정상 실행: 10 / 2 = 5
+  ③ finally 는 이때도 실행됨 ✔
+
+===== 3. 다중 예외 처리 (여러 개의 catch) =====
+  catch ①(NumberFormatException) 실행 → 숫자 변환 불가
+  ※ 일치하는 catch '하나만' 실행됩니다 (위 → 아래 순서로 검사)
+  ※ 순서 주의: 부모(Exception)를 위에 두면 컴파일 오류!
+
+[ OR( | ) 로 묶기 ] 같은 처리는 catch 하나로 — JDK 1.7+
+  하나의 catch 가 두 예외를 모두 처리 → / by zero
+
+===== 4. try-with-resources (자원 자동 닫기) =====
+  [열림] 주문파일 자원을 열었습니다
+  [사용] 주문파일 자원을 사용 중...
+  [닫힘] 주문파일 자원이 자동으로 닫혔습니다 ✔
+  ※ close() 를 부르지 않았는데 자동으로 닫혔습니다 (AutoCloseable)
+
+===== 5. 예외의 전가 (throws) =====
+[A] 하위 메서드가 '직접 처리'
+  잠깐 멈춤(0.1초)...
+  깨어남 → 예외는 이 메서드가 직접 책임
+
+[B] 호출한 곳으로 '전가' (throws)
+  잠깐 멈춤(0.1초)...
+  깨어남 → 처리 안 함, 호출한 곳이 책임
+  ※ 전가하면 '호출한 메서드'가 예외를 책임집니다
+
+===== 6. 사용자 정의 예외 만들기 (throw) =====
+규칙: 점수는 0~100 만 정상. 벗어나면 내가 만든 예외를 발생시킨다.
+
+  점수 85 → 정상
+  점수 150 → 예외! 점수가 100을 초과: 150
+  점수 -10 → 예외! 점수가 음수입니다: -10
+
+===== 7. 예외 클래스의 대표 메서드 =====
+  getMessage() → 직접 넣은 오류 메시지
+  getMessage() (메시지 없을 때) → null
+  printStackTrace() → 예외가 어디서 났는지 경로를 출력 (에러 스트림):
+
+===== 8. 안티패턴 체험: 예외를 '삼키면' =====
+[❌ 빈 catch] 임시 비밀번호를 전송했습니다.
+    → 서버는 실패했는데 사용자는 '성공'한 줄 압니다 (예외를 삼킴)
+[✅ 제대로]   전송 실패: 메일 서버 연결 끊김
+    → 실패를 정확히 알려줍니다
+  ※ 실제 사례에서도 이런 빈 catch 가 자주 보입니다 (README '실전 안티패턴' 참고)
+
+########## 끝. 예외가 났지만 프로그램은 죽지 않았습니다 ##########`;
+
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+const html = esc(raw)
+    .replace(/^(#{5,}.*#{5,})$/gm, '<span class="c-head">$1</span>')
+    .replace(/^(=====.*=====)$/gm, '<span class="c-section">$1</span>')
+    .replace(/^(.*❌.*)$/gm, '<span class="c-bad">$1</span>')
+    .replace(/^(.*✅.*)$/gm, '<span class="c-ok">$1</span>')
+    .replace(/(✔)/g, '<span class="c-ok">$1</span>');
+document.getElementById('consoleBody').innerHTML = html;
+
+function showView(mode) {
+    const btns = document.querySelectorAll('.toggle-btn');
+    btns[0].classList.toggle('active', mode === 'console');
+    btns[1].classList.toggle('active', mode === 'visual');
+    document.getElementById('consoleView').style.display = mode === 'console' ? 'block' : 'none';
+    document.getElementById('visualView').style.display = mode === 'visual' ? 'block' : 'none';
+}
+</script>
+
+</body>
+</html>

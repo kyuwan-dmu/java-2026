@@ -18,7 +18,12 @@ java-2026
 │   ├── practice03/             # 조건에 맞는 주문 찾기
 │   ├── practice04/             # 주문이 계속 들어온다 (ArrayList)
 │   ├── practice05/             # 매출 보고서 만들기
-│   └── practice06/             # 출고 우선순위 정하기 (정렬)
+│   ├── practice06/             # 출고 우선순위 정하기 (정렬)
+│   ├── practice07/             # 브랜드별 집계 (HashMap)
+│   ├── practice08/             # 한 줄로 끝내기 (Stream)
+│   ├── practice09/             # 사은품 지급 이벤트 (List+Map+Set)
+│   ├── practice10/             # 퀴즈 대회 점수판 (ArrayList 집중)
+│   └── practice11/             # 예외 처리 (try-catch + 안티패턴)
 └── docs/
 ```
 
@@ -34,6 +39,9 @@ java-2026
 | 6 | practice06 | 출고 우선순위 정하기 | Comparable, Comparator, 정렬 |
 | 7 | practice07 | 브랜드별 집계를 깔끔하게 | HashMap, Key-Value, getOrDefault |
 | 8 | practice08 | 한 줄로 끝내기 | Stream API, filter, map, collect |
+| 9 | practice09 | 사은품 지급 이벤트 | ArrayList + HashMap + HashSet 종합 |
+| 10 | practice10 | 퀴즈 대회 점수판 | ArrayList 집중 (객체 참조·aliasing 함정) |
+| 11 | practice11 | 예외 처리 (데모) | try-catch-finally, throws, throw, 사용자 정의 예외 + 실전 안티패턴 |
 
 ## 빠른 시작
 1. IntelliJ에서 `File > Open`으로 이 폴더를 엽니다.
