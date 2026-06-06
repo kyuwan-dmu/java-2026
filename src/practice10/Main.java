@@ -14,12 +14,31 @@ public class Main {
     // TODO 1: 두 배열을 순회하며 Participant 객체를 만들어 아래 리스트(participants)에 담으시오.
     ArrayList<Participant> participants = new ArrayList<>();
 
+    for (int i=0; i < names.length; i++) {
+      participants.add(new Participant(names[i], scores[i]));
+    }
 
     // TODO 2: 전체 참가자 수와 평균 점수를 출력하시오. (평균은 소수 첫째 자리까지)
+    int count = 0;
+    int sum = 0;
+    for (Participant partici : participants) {
+      sum += partici.getScore();
+      count++;
+    }
 
+    System.out.println("[전체 참가자] " + count + "명\n" + "[평균 점수] " + sum / scores.length + "점");
 
     // TODO 3: 최고 점수 참가자(1등)를 찾아 출력하시오.
+    String name="";
+    int score = 0;
 
+    for (Participant part: participants) {
+      if (score < part.getScore()) {
+        score = part.getScore();
+        name = part.getName();
+      }
+    }
+    System.out.println("[1등] " + name + " (" + score + "점)");
 
     // TODO 4: 80점 이상 합격자만 '새 ArrayList'에 담아 출력하시오.
 
