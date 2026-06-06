@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Practice 10 — 퀴즈 대회 점수판 결과 예시</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', -apple-system, sans-serif; background: #f0f2f5; color: #1a1a2e; line-height: 1.6; }
+
+        .header { background: linear-gradient(135deg, #6366f1, #8b5cf6); color: white; padding: 40px 20px; text-align: center; }
+        .header h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+        .header p { font-size: 16px; opacity: 0.9; margin-bottom: 20px; }
+
+        .btn-group { display: flex; gap: 12px; justify-content: center; }
+        .toggle-btn { padding: 12px 32px; border-radius: 30px; font-size: 15px; font-weight: 700; cursor: pointer; border: 2px solid white; background: transparent; color: white; transition: all 0.3s; }
+        .toggle-btn:hover, .toggle-btn.active { background: white; color: #6366f1; }
+
+        .container { max-width: 1100px; margin: 0 auto; padding: 30px 20px; }
+
+        /* ===== 콘솔 뷰 ===== */
+        .console-view { background: #1e1e2e; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.2); }
+        .console-titlebar { background: #181825; padding: 12px 16px; display: flex; align-items: center; gap: 8px; }
+        .console-dot { width: 12px; height: 12px; border-radius: 50%; }
+        .console-dot.red { background: #f38ba8; } .console-dot.yellow { background: #f9e2af; } .console-dot.green { background: #a6e3a1; }
+        .console-title { color: #6c7086; font-size: 13px; margin-left: 8px; font-family: monospace; }
+        .console-body { padding: 24px; font-family: 'Cascadia Code', 'D2Coding', 'Consolas', monospace; font-size: 13.5px; line-height: 1.85; color: #cdd6f4; overflow-x: auto; white-space: pre; }
+        .c-section { color: #f9e2af; font-weight: bold; }
+        .c-label { color: #a6e3a1; }
+        .c-top { color: #f38ba8; font-weight: bold; }
+        .c-info { color: #89b4fa; }
+
+        /* ===== 시각화 뷰 ===== */
+        .visual-view { display: none; }
+        .section { background: white; border-radius: 16px; padding: 28px; margin-bottom: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); overflow-x: auto; }
+        .section h2 { font-size: 20px; margin-bottom: 6px; color: #4338ca; }
+        .section .desc { font-size: 14px; color: #6b7280; margin-bottom: 20px; }
+        .section-divider { text-align: center; padding: 8px 0 20px; }
+        .section-divider span { display: inline-block; background: #6366f1; color: white; padding: 8px 24px; border-radius: 24px; font-size: 15px; font-weight: 700; }
+
+        table { width: 100%; border-collapse: collapse; font-size: 14px; }
+        thead th { background: #f8fafc; padding: 12px 14px; text-align: left; font-weight: 600; color: #64748b; border-bottom: 2px solid #e2e8f0; }
+        tbody td { padding: 9px 14px; border-bottom: 1px solid #f1f5f9; }
+        tbody tr:hover { background: #fafbff; }
+        .score { font-weight: 600; text-align: right; }
+
+        .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+        .badge.pass { background: #d1fae5; color: #065f46; }
+        .badge.fail { background: #f3f4f6; color: #9ca3af; }
+
+        .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px; }
+        .card { background: #f8fafc; border-radius: 12px; padding: 20px; text-align: center; border: 1px solid #e2e8f0; }
+        .card .number { font-size: 30px; font-weight: 800; }
+        .card .label { font-size: 13px; color: #6b7280; margin-top: 4px; }
+        .card.c1 .number { color: #6366f1; } .card.c2 .number { color: #3b82f6; }
+        .card.c3 .number { color: #f59e0b; } .card.c4 .number { color: #10b981; } .card.c5 .number { color: #8b5cf6; }
+
+        /* ===== 함정 비교 ===== */
+        .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .compare-box { border-radius: 12px; padding: 20px; }
+        .compare-box.bad { background: #fef2f2; border: 2px solid #fecaca; }
+        .compare-box.good { background: #f0fdf4; border: 2px solid #bbf7d0; }
+        .compare-box h3 { font-size: 16px; margin-bottom: 4px; }
+        .compare-box.bad h3 { color: #dc2626; }
+        .compare-box.good h3 { color: #16a34a; }
+        .compare-box .sub { font-size: 12.5px; color: #6b7280; margin-bottom: 12px; }
+        .mini-list { list-style: none; font-family: 'D2Coding','Consolas',monospace; font-size: 13px; }
+        .mini-list li { padding: 4px 10px; border-radius: 6px; margin-bottom: 4px; }
+        .compare-box.bad .mini-list li { background: #fff; color: #b91c1c; }
+        .compare-box.good .mini-list li { background: #fff; color: #15803d; }
+        .verdict { margin-top: 14px; font-size: 13.5px; font-weight: 600; }
+        .compare-box.bad .verdict { color: #dc2626; }
+        .compare-box.good .verdict { color: #16a34a; }
+        .keypoint { margin-top: 20px; background: #eef2ff; border-left: 4px solid #6366f1; padding: 14px 18px; border-radius: 8px; font-size: 14px; color: #3730a3; }
+
+        .footer { text-align: center; padding: 20px; color: #9ca3af; font-size: 13px; }
+
+        @media (max-width: 768px) {
+            .header h1 { font-size: 22px; }
+            .summary-grid { grid-template-columns: repeat(2, 1fr); }
+            .compare { grid-template-columns: 1fr; }
+            .btn-group { flex-direction: column; align-items: center; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>Practice 10 — 퀴즈 대회 점수판</h1>
+    <p>여러분의 프로그램이 아래와 같은 결과를 출력해야 합니다</p>
+    <div class="btn-group">
+        <button class="toggle-btn active" onclick="showView('console')">콘솔 출력</button>
+        <button class="toggle-btn" onclick="showView('visual')">시각화 보기</button>
+    </div>
+</div>
+
+<div class="container">
+
+    <!-- ===== 콘솔 뷰 ===== -->
+    <div class="console-view" id="consoleView">
+        <div class="console-titlebar">
+            <div class="console-dot red"></div><div class="console-dot yellow"></div><div class="console-dot green"></div>
+            <span class="console-title">practice10.Main — 실행 결과</span>
+        </div>
+        <div class="console-body" id="consoleBody"></div>
+    </div>
+
+    <!-- ===== 시각화 뷰 ===== -->
+    <div class="visual-view" id="visualView">
+
+        <div class="section">
+            <h2>참가자 데이터</h2>
+            <p class="desc">이름 배열과 점수 배열이 같은 순서로 주어집니다</p>
+            <table>
+                <thead><tr><th>#</th><th>이름</th><th>점수</th><th>합격(80↑)</th></tr></thead>
+                <tbody id="dataBody"></tbody>
+            </table>
+        </div>
+
+        <div class="section-divider"><span>이번 문제의 핵심 — 객체를 '어디서' new 하느냐</span></div>
+
+        <div class="section">
+            <h2>같은 코드, 다른 결과</h2>
+            <p class="desc">반복문에서 객체를 어떻게 만드느냐에 따라 점수판이 완전히 달라집니다</p>
+            <div class="compare">
+                <div class="compare-box bad">
+                    <h3>❌ 객체를 재사용 (루프 밖에서 new)</h3>
+                    <div class="sub">Participant p = new Participant(); 를 반복문 밖에 두고 add</div>
+                    <ul class="mini-list" id="wrongList"></ul>
+                    <div class="verdict">→ 전원이 마지막 사람! 같은 객체 1개를 7번 가리킴<br>평균 73.0 · 1등 윤서준 · 합격 0명 (전부 엉망)</div>
+                </div>
+                <div class="compare-box good">
+                    <h3>✅ 매번 new (루프 안에서 생성)</h3>
+                    <div class="sub">for 안에서 new Participant(name, score) 로 매번 새 객체</div>
+                    <ul class="mini-list" id="rightList"></ul>
+                    <div class="verdict">→ 각자 다른 객체! 점수판이 정상 동작<br>평균 81.6 · 1등 정하준 · 합격 4명</div>
+                </div>
+            </div>
+            <div class="keypoint">💡 리스트에 들어가는 건 "값"이 아니라 <b>"객체를 가리키는 화살표(참조)"</b> 입니다.
+            루프 밖에서 만든 객체 1개를 계속 add 하면, 화살표 7개가 전부 같은 객체를 가리키게 됩니다.</div>
+        </div>
+
+        <div class="section">
+            <h2>최종 점수판 (정답)</h2>
+            <div class="summary-grid">
+                <div class="card c1"><div class="number">7명</div><div class="label">전체 참가자</div></div>
+                <div class="card c2"><div class="number">81.6점</div><div class="label">평균 점수</div></div>
+                <div class="card c3"><div class="number">정하준</div><div class="label">1등 (95점)</div></div>
+                <div class="card c4"><div class="number">4명</div><div class="label">합격 (80점 이상)</div></div>
+                <div class="card c5"><div class="number">6명</div><div class="label">최지우 기권 후</div></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">Practice 10 — 객체지향프로그래밍 실습</div>
+</div>
+
+<script>
+const names  = ["김민준", "이서연", "박도윤", "최지우", "정하준", "강유나", "윤서준"];
+const scores = [85, 92, 78, 60, 95, 88, 73];
+
+// ===== 콘솔 출력 =====
+const L = [];
+L.push('<span class="c-section">===== 퀴즈 대회 점수판 =====</span>');
+L.push('<span class="c-label">[전체 참가자]</span> 7명');
+L.push('<span class="c-label">[평균 점수]</span> 81.6점');
+L.push('');
+L.push('<span class="c-label">[1등]</span> <span class="c-top">정하준 (95점)</span>');
+L.push('');
+L.push('<span class="c-label">[합격자 명단 (80점 이상)]</span> 4명');
+['김민준 (85점)','이서연 (92점)','정하준 (95점)','강유나 (88점)'].forEach(s => L.push('- ' + s));
+L.push('');
+L.push('<span class="c-label">[기권 처리]</span> 최지우 제외');
+L.push('<span class="c-label">[남은 참가자]</span> 6명');
+['김민준 (85점)','이서연 (92점)','박도윤 (78점)','정하준 (95점)','강유나 (88점)','윤서준 (73점)'].forEach(s => L.push('- ' + s));
+document.getElementById("consoleBody").innerHTML = L.join('\n');
+
+// ===== 데이터 테이블 =====
+document.getElementById("dataBody").innerHTML = names.map((n, i) => `
+    <tr><td>${i+1}</td><td>${n}</td><td class="score">${scores[i]}점</td>
+    <td>${scores[i] >= 80 ? '<span class="badge pass">합격</span>' : '<span class="badge fail">-</span>'}</td></tr>`).join('');
+
+// ===== 함정 비교 리스트 =====
+const last = `${names[names.length-1]} (${scores[scores.length-1]}점)`;
+document.getElementById("wrongList").innerHTML = names.map(() => `<li>- ${last}</li>`).join('');
+document.getElementById("rightList").innerHTML = names.map((n, i) => `<li>- ${n} (${scores[i]}점)</li>`).join('');
+
+// ===== 뷰 토글 =====
+function showView(mode) {
+    const btns = document.querySelectorAll('.toggle-btn');
+    btns[0].classList.toggle('active', mode === 'console');
+    btns[1].classList.toggle('active', mode === 'visual');
+    document.getElementById('consoleView').style.display = mode === 'console' ? 'block' : 'none';
+    document.getElementById('visualView').style.display = mode === 'visual' ? 'block' : 'none';
+}
+</script>
+
+</body>
+</html>
