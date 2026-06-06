@@ -12,7 +12,20 @@ public class Main {
     System.out.println("===== 퀴즈 대회 점수판 =====");
 
     // TODO 1: 두 배열을 순회하며 Participant 객체를 만들어 아래 리스트(participants)에 담으시오.
-    ArrayList<Participant> participants = new ArrayList<>();
+    ArrayList<Participant> arrayList = new ArrayList<>();
+
+    Participant participant;
+    for(int i = 0; i < 7; i++) {
+      participant = new Participant();
+      participant.setName(names[i]);
+      participant.setScore(scores[i]);
+      arrayList.add(participant);
+    }
+
+    for (Participant p : arrayList) {
+      System.out.println(p);
+    }
+
 
 
     // TODO 2: 전체 참가자 수와 평균 점수를 출력하시오. (평균은 소수 첫째 자리까지)
