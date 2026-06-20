@@ -10,16 +10,49 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) {
-        // 데이터 불러오기
         List<Order> orders = OrderDataProvider.getOrdersAsList();
 
-        // TODO 1: 주문일 오름차순으로 정렬하여 출력하시오
+        Collections.sort(orders, (o1, o2) -> o1.getOrderDate().compareTo(o2.getOrderDate()));
+        System.out.println("===== 주문일 오름차순 (오래된 주문 먼저) =====");
+        for (int i = 0; i < orders.size(); i++) {
+            Order o = orders.get(i);
+            System.out.printf("%2d. %s | [%s] %s - %,d원%n",
+                    i + 1, o.getOrderDate(), o.getBrand(), o.getProductName(), o.getPrice());
+        }
 
-        // TODO 2: 상품금액 내림차순으로 정렬하여 출력하시오
+        System.out.println();
 
-        // TODO 3: 브랜드별 오름차순 → 같은 브랜드 내 금액 내림차순 정렬하시오
+        Collections.sort(orders, (o1, o2) -> o2.getPrice() - o1.getPrice());
+        System.out.println("===== 상품금액 내림차순 (비싼 주문 먼저) =====");
+        for (int i = 0; i < orders.size(); i++) {
+            Order o = orders.get(i);
+            System.out.printf("%2d. [%s] %s - %,d원%n",
+                    i + 1, o.getBrand(), o.getProductName(), o.getPrice());
+        }
 
-        // TODO 4: (추가) 정렬 후 상위 5건만 출력하시오
+        System.out.println();
 
+        Collections.sort(orders, Comparator.comparing(Order::getBrand)
+                .thenComparing(Comparator.comparingInt(Order::getPrice).reversed()));
+        System.out.println("===== 브랜드별 → 금액 내림차순 =====");
+        String currentBrand = "";
+        for (int i = 0; i < orders.size(); i++) {
+            Order o = orders.get(i);
+            if (!o.getBrand().equals(currentBrand)) {
+                currentBrand = o.getBrand();
+                System.out.println("[" + currentBrand + "]");
+            }
+            System.out.printf("%2d. %s - %,d원%n", i + 1, o.getProductName(), o.getPrice());
+        }
+
+        System.out.println();
+
+        System.out.println("===== 상위 5건 =====");
+        Collections.sort(orders, (o1, o2) -> o2.getPrice() - o1.getPrice());
+        for (int i = 0; i < 5; i++) {
+            Order o = orders.get(i);
+            System.out.printf("%d. [%s] %s - %,d원%n",
+                    i + 1, o.getBrand(), o.getProductName(), o.getPrice());
+        }
     }
 }

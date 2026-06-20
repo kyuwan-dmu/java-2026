@@ -11,18 +11,43 @@ import java.util.stream.Collectors;
 public class Main {
 
     public static void main(String[] args) {
-        // 데이터 불러오기
         List<Order> orders = OrderDataProvider.getOrdersAsList();
 
-        // TODO 1: Stream으로 바디홀릭 주문만 필터링하여 출력하시오
+        System.out.println("===== 1. 바디홀릭 주문 필터링 =====");
+        orders.stream()
+                .filter(o -> o.getBrand().equals("바디홀릭"))
+                .forEach(o -> System.out.printf("[%s] %s - %,d원%n",
+                        o.getBrand(), o.getProductName(), o.getPrice()));
 
-        // TODO 2: Stream으로 전체 매출 합계를 구하시오
+        System.out.println();
+        System.out.println("===== 2. 전체 매출 합계 =====");
+        int total = orders.stream()
+                .mapToInt(Order::getPrice)
+                .sum();
+        System.out.printf("%,d원%n", total);
 
-        // TODO 3: Stream으로 상품금액 내림차순 상위 5건을 출력하시오
+        System.out.println();
+        System.out.println("===== 3. 금액 상위 5건 =====");
+        List<Order> top5 = orders.stream()
+                .sorted(Comparator.comparingInt(Order::getPrice).reversed())
+                .limit(5)
+                .collect(Collectors.toList());
+        for (int i = 0; i < top5.size(); i++) {
+            Order o = top5.get(i);
+            System.out.printf("%d. [%s] %s - %,d원%n",
+                    i + 1, o.getBrand(), o.getProductName(), o.getPrice());
+        }
 
-        // TODO 4: Stream으로 브랜드별 주문 건수를 집계하시오
+        System.out.println();
+        System.out.println("===== 4. 브랜드별 주문 건수 =====");
+        Map<String, Long> brandCount = orders.stream()
+                .collect(Collectors.groupingBy(Order::getBrand, Collectors.counting()));
+        brandCount.forEach((brand, count) -> System.out.println(brand + ": " + count + "건"));
 
-        // TODO 5: (추가) Stream으로 브랜드별 매출 합계를 구하시오
-
+        System.out.println();
+        System.out.println("===== 5. 브랜드별 매출 합계 =====");
+        Map<String, Integer> brandTotal = orders.stream()
+                .collect(Collectors.groupingBy(Order::getBrand, Collectors.summingInt(Order::getPrice)));
+        brandTotal.forEach((brand, sum) -> System.out.printf("%s: %,d원%n", brand, sum));
     }
 }

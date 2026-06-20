@@ -6,14 +6,25 @@ import model.Order;
 public class Main {
 
     public static void main(String[] args) {
-        // 데이터 불러오기
         Order[] orders = OrderDataProvider.getOrdersAsArray();
 
-        // TODO 1: 기본 for문으로 전체 주문을 번호와 함께 출력하시오
+        System.out.println("===== 전체 주문 목록 =====");
+        for (int i = 0; i < orders.length; i++) {
+            Order o = orders[i];
+            System.out.printf("%2d. [%s] %s - %,d원%n",
+                    i + 1, o.getBrand(), o.getProductName(), o.getPrice());
+        }
+        System.out.println("========================");
 
-        // TODO 2: 향상된 for문(for-each)으로 전체 주문을 출력하시오
+        System.out.println();
 
-        // TODO 3: 전체 주문 건수를 출력하시오
+        System.out.println("===== 전체 주문 목록 (for-each) =====");
+        for (Order o : orders) {
+            System.out.printf("[%s] %s - %,d원%n",
+                    o.getBrand(), o.getProductName(), o.getPrice());
+        }
+        System.out.println("========================");
 
+        System.out.println("총 " + orders.length + "건");
     }
 }
